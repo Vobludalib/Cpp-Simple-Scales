@@ -264,25 +264,22 @@ Note::Note(const Note& scale_root, unsigned int scale_degree, char accidentals)
 
     if (scale_root.names_.has_value() && scale_root.names_.value().size() == 1)
     {
+        size_t number_of_note_names = note_names.size();
         midi_value root_base_degree = scale_root.names_.value()[0].base_degree_;
-        midi_value new_base_degree = (root_base_degree + scale_degree) % note_names.size();
-        midi_value root_midi_offset = scale_degree_to_midi_diff.at(root_base_degree) +
-                                      scale_root.names_.value()[0].accidentals_;
-        bool octave_offset_present = (scale_degree > 6);
-        midi_value new_note_without_accidentals_midi_offset =
-            scale_degree_to_midi_diff.at(new_base_degree) +
-            (notes_per_octave * (scale_degree / note_names.size()));
-        midi_value expected_midi_diff_from_root =
-            scale_degree_to_midi_diff.at(scale_degree % note_names.size()) + accidentals +
-            (notes_per_octave * (scale_degree / note_names.size()));
-        midi_value midi_diff_from_root =
-            new_note_without_accidentals_midi_offset - root_midi_offset;
-        while (midi_diff_from_root < 0)
+        midi_value new_base_degree = (root_base_degree + scale_degree) % number_of_note_names;
+        midi_value root_midi_offset_from_c = scale_degree_to_midi_diff.at(root_base_degree) +
+                                             scale_root.names_.value()[0].accidentals_;
+        midi_value scale_degree_without_accidentals_midi_offset_from_c =
+            scale_degree_to_midi_diff.at(new_base_degree);
+        if (scale_degree_without_accidentals_midi_offset_from_c < root_midi_offset_from_c)
         {
-            midi_diff_from_root = midi_diff_from_root + 12;
+            scale_degree_without_accidentals_midi_offset_from_c += notes_per_octave;
         }
-        char needed_accidentals =
-            (expected_midi_diff_from_root - midi_diff_from_root) % notes_per_octave;
+        midi_value expected_midi_diff_from_root =
+            scale_degree_to_midi_diff.at(scale_degree % number_of_note_names) + accidentals;
+        midi_value unaccidented_midi_diff_from_root =
+            scale_degree_without_accidentals_midi_offset_from_c - root_midi_offset_from_c;
+        char needed_accidentals = expected_midi_diff_from_root - unaccidented_midi_diff_from_root;
         ni = {static_cast<unsigned int>(new_base_degree), needed_accidentals};
     }
 
