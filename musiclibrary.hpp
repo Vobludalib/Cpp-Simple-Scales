@@ -14,6 +14,8 @@
 constexpr char NO_NOTE_INFORMATION[] = "This Note object has no MIDI or name information!";
 
 using midi_value = int;
+using accidentals_value = short;
+using scale_degree_value = size_t;
 
 constexpr midi_value middle_c_midi = 60;
 constexpr int middle_c_octave = 4;
@@ -52,29 +54,37 @@ const std::vector<std::string> note_names = {"Do", "Re", "Mi", "Fa", "Sol", "La"
 
 // ====NOTE====
 
-const std::multimap<midi_value, std::tuple<midi_value, midi_value>>
-    scale_midi_offset_to_scale_degree_and_accidental = {
-        {0, {0, 0}}, {1, {0, 1}},  {1, {1, -1}}, {2, {1, 0}},  {3, {1, 1}},   {3, {2, -1}},
-        {4, {2, 0}}, {5, {3, 0}},  {6, {3, 1}},  {6, {4, -1}}, {7, {4, 0}},  // Perfect fifth
-        {8, {4, 1}}, {8, {5, -1}}, {9, {5, 0}},  {10, {5, 1}}, {10, {6, -1}}, {11, {6, 0}}};
-
-const std::map<midi_value, midi_value> scale_degree_to_midi_diff = {{0, 0}, {1, 2}, {2, 4}, {3, 5},
-                                                                    {4, 7}, {5, 9}, {6, 11}};
-
-constexpr char note_name_regex_pattern[] = "([a|c-zA-Z]*)(b*)(#*)([\\-|\\d]*)";
-const std::regex note_name_regex{note_name_regex_pattern};
-
 class Note
 {
    private:
+    // The following are for internal use only, so use 0-based indexing
+    inline static const std::multimap<midi_value, std::tuple<midi_value, accidentals_value>>
+        scale_midi_offset_to_scale_degree_and_accidental{
+            {0, {0, 0}}, {1, {0, 1}},  {1, {1, -1}}, {2, {1, 0}},  {3, {1, 1}},   {3, {2, -1}},
+            {4, {2, 0}}, {5, {3, 0}},  {6, {3, 1}},  {6, {4, -1}}, {7, {4, 0}},  // Perfect fifth
+            {8, {4, 1}}, {8, {5, -1}}, {9, {5, 0}},  {10, {5, 1}}, {10, {6, -1}}, {11, {6, 0}}};
+
+    inline static const std::map<scale_degree_value, midi_value> scale_degree_to_midi_diff{
+        {0, 0}, {1, 2}, {2, 4}, {3, 5}, {4, 7}, {5, 9}, {6, 11}};
+
+    inline static const char note_name_regex_pattern[] = "([a|c-zA-Z]*)(b*)(#*)([\\-|\\d]*)";
+    inline static const std::regex note_name_regex{note_name_regex_pattern};
+
+    // base_degree_ here is an index to the note_names std::vector object, and so uses 0-based
+    // indexing
     struct NamingInformation
     {
-        unsigned int base_degree_;
-        char accidentals_;
+        scale_degree_value base_degree_;
+        accidentals_value accidentals_;
 
-        NamingInformation(unsigned int base_degree, char accidentals)
+        NamingInformation(scale_degree_value base_degree, accidentals_value accidentals)
             : base_degree_(base_degree), accidentals_(accidentals)
         {
+            if (base_degree > note_names.size() - 1)
+            {
+                throw std::invalid_argument(
+                    "Base degree is set above the amount of note names we have registered!");
+            }
         }
     };
 
@@ -91,10 +101,7 @@ class Note
         }
 
         // Used when manual octave overriding has to occur
-        MIDIInformation(midi_value midi_val, midi_value octave)
-            : midi_value_(midi_val), octave_(octave)
-        {
-        }
+        MIDIInformation(midi_value midi_val, int octave) : midi_value_(midi_val), octave_(octave) {}
     };
 
     std::optional<MIDIInformation> midi_;
@@ -121,7 +128,7 @@ class Note
     // Creates a note representing a specific scale degree based off the scale root.
     // If the scale_root has a MIDI value, then the resulting note will also have a MIDI value.
     // If the scale_root has a unique name, then the resulting note will also have a unique name.
-    Note(const Note& scale_root, unsigned int scale_degree, char accidentals);
+    Note(const Note& scale_root, scale_degree_value scale_degree, accidentals_value accidentals);
 
     ~Note() = default;
 
@@ -168,7 +175,7 @@ Note::generate_naming_and_midi_from_string(const std::string& name)
     std::regex_search(name, matches, note_name_regex);
     size_t i = 0;
     size_t note_name_roots_index = 0;
-    int accidentals = 0;
+    accidentals_value accidentals = 0;
     int octave = 0;
     bool octave_found = false;
     for (auto&& match : matches)
@@ -179,18 +186,18 @@ Note::generate_naming_and_midi_from_string(const std::string& name)
             {
                 auto it = std::find(note_names.begin(), note_names.end(), match.str());
                 auto index = std::distance(note_names.begin(), it);
-                if (index >= note_names.size())
+                if (static_cast<unsigned long>(index) >= note_names.size())
                     throw std::invalid_argument(
                         "Note name root passed does not appear in the list of valid note name "
                         "roots!");
-                note_name_roots_index = index;
+                note_name_roots_index = static_cast<size_t>(index);
                 break;
             }
             case 2:  // Second match group should be the flats
             {
                 if (match.length() > 0)
                 {
-                    accidentals = -match.length();
+                    accidentals = -static_cast<accidentals_value>(match.length());
                 }
                 break;
             }
@@ -201,7 +208,7 @@ Note::generate_naming_and_midi_from_string(const std::string& name)
                     if (accidentals < 0)
                         throw std::invalid_argument("Passed note name has both flats and sharps!");
 
-                    accidentals = match.length();
+                    accidentals = static_cast<accidentals_value>(match.length());
                 }
             }
             case 4:  // Fourth match group is for the possible octave
@@ -222,10 +229,10 @@ Note::generate_naming_and_midi_from_string(const std::string& name)
     std::optional<MIDIInformation> mi;
     if (octave_found)
     {
-        int midi_offset_from_scale_c =
-            note_name_roots_index * 2 - (note_name_roots_index > 2 ? 1 : 0);
-        int midi = middle_c_midi + ((octave - middle_c_octave) * notes_per_octave) +
-                   midi_offset_from_scale_c + accidentals;
+        midi_value midi_offset_from_scale_c = static_cast<midi_value>(
+            note_name_roots_index * 2 - (note_name_roots_index > 2 ? 1 : 0));
+        midi_value midi = middle_c_midi + ((octave - middle_c_octave) * notes_per_octave) +
+                          midi_offset_from_scale_c + accidentals;
         mi = MIDIInformation{midi, octave};
     }
 
@@ -239,7 +246,7 @@ Note::Note(const std::string& name)
     midi_ = midi;
 }
 
-Note::Note(const Note& scale_root, unsigned int scale_degree, char accidentals)
+Note::Note(const Note& scale_root, scale_degree_value scale_degree, accidentals_value accidentals)
 {
     // Second scale degree corresponds to index one due to different indexing
     if (scale_degree == 0)
@@ -253,20 +260,20 @@ Note::Note(const Note& scale_root, unsigned int scale_degree, char accidentals)
     std::optional<NamingInformation> ni;
     std::optional<MIDIInformation> midii;
 
-    midi_value scale_degree_midi_diff =
-        scale_degree_to_midi_diff.at(scale_degree % note_names.size()) +
-        (notes_per_octave * (scale_degree / note_names.size()));
-
     if (scale_root.midi_.has_value())
     {
+        midi_value scale_degree_midi_diff =
+            scale_degree_to_midi_diff.at(scale_degree % note_names.size()) +
+                                    static_cast<midi_value>((notes_per_octave * (scale_degree / note_names.size())));
         midii = {scale_root.midi_.value().midi_value_ + scale_degree_midi_diff + accidentals};
     }
 
     if (scale_root.names_.has_value() && scale_root.names_.value().size() == 1)
     {
         size_t number_of_note_names = note_names.size();
-        midi_value root_base_degree = scale_root.names_.value()[0].base_degree_;
-        midi_value new_base_degree = (root_base_degree + scale_degree) % number_of_note_names;
+        scale_degree_value root_base_degree = scale_root.names_.value()[0].base_degree_;
+        scale_degree_value new_base_degree =
+            (root_base_degree + scale_degree) % number_of_note_names;
         midi_value root_midi_offset_from_c = scale_degree_to_midi_diff.at(root_base_degree) +
                                              scale_root.names_.value()[0].accidentals_;
         midi_value scale_degree_without_accidentals_midi_offset_from_c =
@@ -279,7 +286,8 @@ Note::Note(const Note& scale_root, unsigned int scale_degree, char accidentals)
             scale_degree_to_midi_diff.at(scale_degree % number_of_note_names) + accidentals;
         midi_value unaccidented_midi_diff_from_root =
             scale_degree_without_accidentals_midi_offset_from_c - root_midi_offset_from_c;
-        char needed_accidentals = expected_midi_diff_from_root - unaccidented_midi_diff_from_root;
+        accidentals_value needed_accidentals = static_cast<accidentals_value>(
+            expected_midi_diff_from_root - unaccidented_midi_diff_from_root);
         ni = {static_cast<unsigned int>(new_base_degree), needed_accidentals};
     }
 
