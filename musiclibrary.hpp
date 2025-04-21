@@ -11,6 +11,10 @@
 #include <string>
 #include <vector>
 
+constexpr char NO_MIDI_INFORMATION[] = "Trying to get MIDI of a Note without MIDI information.";
+constexpr char NO_NAME_INFORMATION[] = "Trying to get name of a Note without name information.";
+constexpr char NOT_BOTH_INFORMATION[] =
+    "Trying to get MIDI and name of a Note without information for both.";
 constexpr char NO_NOTE_INFORMATION[] = "This Note object has no MIDI or name information!";
 
 using midi_value = int;
@@ -110,6 +114,23 @@ class Note
     std::vector<NamingInformation> generate_naming_information_from_midi(midi_value midi);
     std::tuple<NamingInformation, std::optional<MIDIInformation>>
     generate_naming_and_midi_from_string(const std::string& name);
+    std::tuple<std::optional<NamingInformation>, std::optional<MIDIInformation>>
+    generate_naming_and_midi_from_root_and_scale_degree(const Note& scale_root,
+                                                        scale_degree_value scale_degree,
+                                                        accidentals_value accidentals);
+
+    inline bool check_has_midi() const { return midi_.has_value(); }
+    inline bool check_has_name() const
+    {
+        return !(!names_.has_value() || names_.value().size() == 0);
+    }
+
+    bool have_to_regenerate_name = true;
+    std::string name_as_string;
+    std::string generate_name_as_string() const;
+
+    std::string complex_name;
+    std::string generate_complex_name_as_string() const;
 
    public:
     // Creates a note representing middle C - has MIDI information and a name
@@ -120,15 +141,32 @@ class Note
     // Multiple names can be generated due to enharmonics (enharmonics only up to one accidental are
     // created)
     Note(midi_value midi, bool generate_names = true);
+    void set_note(midi_value midi, bool generate_names = true);
 
     // Creates a note representing a name
     // If a number within the valid octave range is present, then MIDI information is also generated
     Note(const std::string& name);
+    void set_note(const std::string& name);
 
     // Creates a note representing a specific scale degree based off the scale root.
     // If the scale_root has a MIDI value, then the resulting note will also have a MIDI value.
     // If the scale_root has a unique name, then the resulting note will also have a unique name.
     Note(const Note& scale_root, scale_degree_value scale_degree, accidentals_value accidentals);
+    void set_note(const Note& scale_root, scale_degree_value scale_degree,
+                  accidentals_value accidentals);
+
+    inline midi_value get_midi() const
+    {
+        if (midi_.has_value())
+            return midi_.value().midi_value_;
+        else
+            throw std::runtime_error(NO_MIDI_INFORMATION);
+    }
+
+    std::string get_name();
+    std::string get_name() const;
+    std::string get_name_and_midi_string();
+    std::string get_name_and_midi_string() const;
 
     ~Note() = default;
 
@@ -164,6 +202,18 @@ Note::Note(midi_value midi, bool generate_names) : midi_({midi})
     {
         names_ = generate_naming_information_from_midi(midi);
     }
+    have_to_regenerate_name = true;
+}
+
+void Note::set_note(midi_value midi, bool generate_names)
+{
+    midi_ = {midi};
+    names_ = {};
+    if (generate_names)
+    {
+        names_ = generate_naming_information_from_midi(midi);
+    }
+    have_to_regenerate_name = true;
 }
 
 // Expects name to be in the form [Base Note Name][optional multiple # or b chars][optional number
@@ -246,7 +296,18 @@ Note::Note(const std::string& name)
     midi_ = midi;
 }
 
-Note::Note(const Note& scale_root, scale_degree_value scale_degree, accidentals_value accidentals)
+void Note::set_note(const std::string& name)
+{
+    auto [naming, midi] = generate_naming_and_midi_from_string(name);
+    names_ = {naming};
+    midi_ = midi;
+    have_to_regenerate_name = true;
+}
+
+std::tuple<std::optional<Note::NamingInformation>, std::optional<Note::MIDIInformation>>
+Note::generate_naming_and_midi_from_root_and_scale_degree(const Note& scale_root,
+                                                          scale_degree_value scale_degree,
+                                                          accidentals_value accidentals)
 {
     // Second scale degree corresponds to index one due to different indexing
     if (scale_degree == 0)
@@ -257,14 +318,14 @@ Note::Note(const Note& scale_root, scale_degree_value scale_degree, accidentals_
 
     scale_degree -= 1;
 
-    std::optional<NamingInformation> ni;
+    std::optional<NamingInformation> namei;
     std::optional<MIDIInformation> midii;
 
     if (scale_root.midi_.has_value())
     {
         midi_value scale_degree_midi_diff =
             scale_degree_to_midi_diff.at(scale_degree % note_names.size()) +
-                                    static_cast<midi_value>((notes_per_octave * (scale_degree / note_names.size())));
+            static_cast<midi_value>((notes_per_octave * (scale_degree / note_names.size())));
         midii = {scale_root.midi_.value().midi_value_ + scale_degree_midi_diff + accidentals};
     }
 
@@ -288,7 +349,7 @@ Note::Note(const Note& scale_root, scale_degree_value scale_degree, accidentals_
             scale_degree_without_accidentals_midi_offset_from_c - root_midi_offset_from_c;
         accidentals_value needed_accidentals = static_cast<accidentals_value>(
             expected_midi_diff_from_root - unaccidented_midi_diff_from_root);
-        ni = {static_cast<unsigned int>(new_base_degree), needed_accidentals};
+        namei = {static_cast<scale_degree_value>(new_base_degree), needed_accidentals};
     }
 
     if (!scale_root.midi_.has_value() && scale_root.names_.has_value() &&
@@ -300,50 +361,129 @@ Note::Note(const Note& scale_root, scale_degree_value scale_degree, accidentals_
             "more than one possible name");
     }
 
-    midi_ = midii;
-    if (ni.has_value()) names_ = {ni.value()};
+    return std::tuple{namei, midii};
+}
+
+Note::Note(const Note& scale_root, scale_degree_value scale_degree, accidentals_value accidentals)
+{
+    auto [naming, midi] =
+        generate_naming_and_midi_from_root_and_scale_degree(scale_root, scale_degree, accidentals);
+    midi_ = midi;
+    if (naming.has_value()) names_ = {naming.value()};
+}
+
+void Note::set_note(const Note& scale_root, scale_degree_value scale_degree,
+                    accidentals_value accidentals)
+{
+    auto [naming, midi] =
+        generate_naming_and_midi_from_root_and_scale_degree(scale_root, scale_degree, accidentals);
+    midi_ = midi;
+    if (naming.has_value()) names_ = {naming.value()};
+    have_to_regenerate_name = true;
+}
+
+std::string Note::generate_name_as_string() const
+{
+    std::ostringstream stream;
+    bool first = true;
+    for (auto&& naming_info : names_.value())
+    {
+        if (!first) stream << seperator;
+
+        stream << note_names[naming_info.base_degree_];
+        std::string accidental =
+            naming_info.accidentals_ < 0 ? downward_accidental : upward_accidental;
+
+        int amount_of_accidentals =
+            naming_info.accidentals_ < 0 ? naming_info.accidentals_ * -1 : naming_info.accidentals_;
+
+        for (int i = 0; i < amount_of_accidentals; ++i)
+        {
+            stream << accidental;
+        }
+
+        first = false;
+    }
+
+    return std::move(stream.str());
+}
+
+std::string Note::get_name()
+{
+    if (!(check_has_name())) throw std::runtime_error(NO_NAME_INFORMATION);
+    if (have_to_regenerate_name) name_as_string = generate_name_as_string();
+    return name_as_string;
+}
+
+std::string Note::get_name() const
+{
+    if (!(check_has_name())) throw std::runtime_error(NO_NAME_INFORMATION);
+    if (!have_to_regenerate_name) return name_as_string;
+    return generate_name_as_string();
+}
+
+std::string Note::generate_complex_name_as_string() const
+{
+    std::ostringstream stream;
+    int octave = midi_.value().octave_;
+
+    bool first = true;
+    for (auto&& naming_info : names_.value())
+    {
+        if (!first) stream << seperator;
+
+        stream << note_names[naming_info.base_degree_];
+        std::string accidental =
+            naming_info.accidentals_ < 0 ? downward_accidental : upward_accidental;
+
+        int amount_of_accidentals =
+            naming_info.accidentals_ < 0 ? naming_info.accidentals_ * -1 : naming_info.accidentals_;
+
+        for (int i = 0; i < amount_of_accidentals; ++i)
+        {
+            stream << accidental;
+        }
+
+        stream << octave << " (" << midi_.value().midi_value_ << ')';
+
+        first = false;
+    }
+
+    return std::move(stream.str());
+}
+
+std::string Note::get_name_and_midi_string()
+{
+    if (!check_has_midi() || !check_has_name()) throw std::runtime_error(NOT_BOTH_INFORMATION);
+    if (have_to_regenerate_name) complex_name = generate_complex_name_as_string();
+    return complex_name;
+}
+
+std::string Note::get_name_and_midi_string() const
+{
+    if (!check_has_midi() || !check_has_name()) throw std::runtime_error(NOT_BOTH_INFORMATION);
+    if (!have_to_regenerate_name)
+    {
+        return complex_name;
+    }
+    return generate_complex_name_as_string();
 }
 
 std::ostream& operator<<(std::ostream& stream, const Note& note)
 {
-    if (note.names_.has_value())
+    if (note.check_has_midi() && note.check_has_name())
+        stream << note.get_name_and_midi_string();
+    else if (note.check_has_midi())
     {
-        std::optional<int> octave;
-        if (note.midi_.has_value())
-        {
-            octave = note.midi_.value().octave_;
-        }
-
-        bool first = true;
-        for (auto&& naming_info : note.names_.value())
-        {
-            if (!first) stream << seperator;
-
-            stream << note_names[naming_info.base_degree_];
-            std::string accidental =
-                naming_info.accidentals_ < 0 ? downward_accidental : upward_accidental;
-
-            int amount_of_accidentals = naming_info.accidentals_ < 0 ? naming_info.accidentals_ * -1
-                                                                     : naming_info.accidentals_;
-
-            for (int i = 0; i < amount_of_accidentals; ++i)
-            {
-                stream << accidental;
-            }
-
-            if (octave.has_value())
-                stream << octave.value() << " (" << note.midi_.value().midi_value_ << ')';
-
-            first = false;
-        }
+        stream << note.get_midi();
     }
-    else if (note.midi_.has_value())
+    else if (note.check_has_name())
     {
-        stream << note.midi_.value().midi_value_;
+        stream << note.get_name();
     }
     else
     {
-        throw std::runtime_error(NO_NOTE_INFORMATION);
+        throw std::runtime_error(NO_NAME_INFORMATION);
     }
 
     return stream;
