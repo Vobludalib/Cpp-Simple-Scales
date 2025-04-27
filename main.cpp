@@ -4,25 +4,12 @@
 // #define GERMAN_NAMING
 
 #include "musiclibrary.hpp"
+#include "scalemanager.hpp"
 
 int main()
 {
-    std::ifstream file;
-    file.open("./scales.txt");
-
-    if (!file.good())
-    {
-        throw std::exception();
-    }
-
-    Scale scale;
-    while (file)
-    {
-        file >> scale;
-        std::cout << scale << std::endl;
-        auto realised_scale = RealisedScale{Note{"C4"}, scale};
-        std::cout << realised_scale << std::endl;
-    }
-
-    file.close();
+    ScaleManager sm;
+    sm.load_scales_from_file("./scales.csv");
+    auto&& scale_entry = sm.get_random_scales(1);
+    std::cout << scale_entry[0]->get_name() << std::endl;
 }
