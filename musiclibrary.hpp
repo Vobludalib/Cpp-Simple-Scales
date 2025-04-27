@@ -16,6 +16,8 @@ constexpr char NO_NAME_INFORMATION[] = "Trying to get name of a Note without nam
 constexpr char NOT_BOTH_INFORMATION[] =
     "Trying to get MIDI and name of a Note without information for both.";
 constexpr char NO_NOTE_INFORMATION[] = "This Note object has no MIDI or name information!";
+constexpr char BOTH_ACCIDENTALS_FOUND[] = "Passed note name has both flats and sharps!";
+constexpr char NO_SCALE_DEGREE[] = "No scale degree passed in string!";
 
 using midi_value = int;
 using accidentals_value = short;
@@ -24,7 +26,8 @@ using scale_degree_value = size_t;
 constexpr midi_value middle_c_midi = 60;
 constexpr int middle_c_octave = 4;
 constexpr midi_value notes_per_octave = 12;
-constexpr char seperator = '/';
+constexpr char note_print_seperator = '/';
+constexpr char scale_degree_seperator = ',';
 
 // TODO: Change this behaviour into a formatter class
 // Setting default for which system to use
@@ -237,9 +240,22 @@ Note::generate_naming_and_midi_from_string(const std::string& name)
                 auto it = std::find(note_names.begin(), note_names.end(), match.str());
                 auto index = std::distance(note_names.begin(), it);
                 if (static_cast<unsigned long>(index) >= note_names.size())
-                    throw std::invalid_argument(
-                        "Note name root passed does not appear in the list of valid note name "
-                        "roots!");
+                {
+                    bool is_ok = false;
+#ifdef GERMAN_NAMING
+                    // Special-casing for the German naming system
+                    if (match.str() == "B")
+                    {
+                        note_name_roots_index = 6;
+                        accidentals = -1;
+                        is_ok = true;
+                    }
+#endif
+                    if (!is_ok)
+                        throw std::invalid_argument(
+                            "Note name root passed does not appear in the list of valid note name "
+                            "roots!");
+                }
                 note_name_roots_index = static_cast<size_t>(index);
                 break;
             }
@@ -247,7 +263,7 @@ Note::generate_naming_and_midi_from_string(const std::string& name)
             {
                 if (match.length() > 0)
                 {
-                    accidentals = -static_cast<accidentals_value>(match.length());
+                    accidentals += -static_cast<accidentals_value>(match.length());
                 }
                 break;
             }
@@ -255,11 +271,11 @@ Note::generate_naming_and_midi_from_string(const std::string& name)
             {
                 if (match.length() > 0)
                 {
-                    if (accidentals < 0)
-                        throw std::invalid_argument("Passed note name has both flats and sharps!");
+                    if (accidentals < 0) throw std::invalid_argument(BOTH_ACCIDENTALS_FOUND);
 
-                    accidentals = static_cast<accidentals_value>(match.length());
+                    accidentals += static_cast<accidentals_value>(match.length());
                 }
+                break;
             }
             case 4:  // Fourth match group is for the possible octave
             {
@@ -270,6 +286,7 @@ Note::generate_naming_and_midi_from_string(const std::string& name)
                     octave = std::stoi(match.str());
                     octave_found = true;
                 }
+                break;
             }
         }
         ++i;
@@ -388,14 +405,35 @@ std::string Note::generate_name_as_string() const
     bool first = true;
     for (auto&& naming_info : names_.value())
     {
-        if (!first) stream << seperator;
+        if (!first) stream << note_print_seperator;
 
+#ifdef GERMAN_NAMING
+        // German special casing
+        if (naming_info.base_degree_ == 6 && naming_info.accidentals_ < 0)
+        {
+            stream << 'B';
+        }
+        else
+        {
+            stream << note_names[naming_info.base_degree_];
+        }
+#endif
+#ifndef GERMAN_NAMING
         stream << note_names[naming_info.base_degree_];
+#endif
         std::string accidental =
             naming_info.accidentals_ < 0 ? downward_accidental : upward_accidental;
 
         int amount_of_accidentals =
             naming_info.accidentals_ < 0 ? naming_info.accidentals_ * -1 : naming_info.accidentals_;
+
+#ifdef GERMAN_NAMING
+        // German special casing
+        if (naming_info.base_degree_ == 6 && naming_info.accidentals_ < 0)
+        {
+            amount_of_accidentals -= 1;
+        }
+#endif
 
         for (int i = 0; i < amount_of_accidentals; ++i)
         {
@@ -405,7 +443,7 @@ std::string Note::generate_name_as_string() const
         first = false;
     }
 
-    return std::move(stream.str());
+    return stream.str();
 }
 
 std::string Note::get_name()
@@ -430,26 +468,16 @@ std::string Note::generate_complex_name_as_string() const
     bool first = true;
     for (auto&& naming_info : names_.value())
     {
-        if (!first) stream << seperator;
+        if (!first) stream << note_print_seperator;
 
-        stream << note_names[naming_info.base_degree_];
-        std::string accidental =
-            naming_info.accidentals_ < 0 ? downward_accidental : upward_accidental;
-
-        int amount_of_accidentals =
-            naming_info.accidentals_ < 0 ? naming_info.accidentals_ * -1 : naming_info.accidentals_;
-
-        for (int i = 0; i < amount_of_accidentals; ++i)
-        {
-            stream << accidental;
-        }
+        stream << get_name();
 
         stream << octave << " (" << midi_.value().midi_value_ << ')';
 
         first = false;
     }
 
-    return std::move(stream.str());
+    return stream.str();
 }
 
 std::string Note::get_name_and_midi_string()
@@ -490,5 +518,186 @@ std::ostream& operator<<(std::ostream& stream, const Note& note)
 }
 
 // ====NOTE====
+// ====SCALE====
+
+class Scale
+{
+   private:
+    using scale_degree = std::pair<scale_degree_value, accidentals_value>;
+
+    inline static const char scale_degree_regex_pattern[] = "(b*)(#*)([\\-|\\d]*)";
+    inline static const std::regex scale_degree_regex{scale_degree_regex_pattern};
+
+    std::vector<scale_degree> _scale_degrees;
+    static scale_degree parse_scale_degree_string(const std::string& input);
+
+   public:
+    Scale() = default;
+    Scale(const std::vector<scale_degree>& degrees) : _scale_degrees(degrees) {};
+    Scale(std::vector<scale_degree>&& degrees) : _scale_degrees(std::move(degrees)) {};
+
+    inline void clear() { return _scale_degrees.clear(); }
+    inline size_t size() { return _scale_degrees.size(); }
+    friend std::istream& operator>>(std::istream& stream, Scale& scale);
+    friend std::ostream& operator<<(std::ostream& stream, const Scale& scale);
+
+    auto begin() { return _scale_degrees.begin(); }
+    auto end() { return _scale_degrees.end(); }
+    auto begin() const { return _scale_degrees.begin(); }
+    auto end() const { return _scale_degrees.end(); }
+    auto cbegin() const { return _scale_degrees.cbegin(); }
+    auto cend() const { return _scale_degrees.cend(); }
+
+    scale_degree& operator[](size_t index) { return _scale_degrees[index]; }
+    const scale_degree& operator[](size_t index) const { return _scale_degrees[index]; }
+};
+
+Scale::scale_degree Scale::parse_scale_degree_string(const std::string& input)
+{
+    std::smatch matches;
+    std::regex_search(input, matches, scale_degree_regex);
+    size_t i = 0;
+    scale_degree_value sd = 0;
+    accidentals_value accidentals = 0;
+    for (auto&& match : matches)
+    {
+        switch (i)
+        {
+            case 1:  // First match group should be the flats
+            {
+                if (match.length() > 0)
+                {
+                    accidentals = -static_cast<accidentals_value>(match.length());
+                }
+                break;
+            }
+            case 2:  // Second match group should be the sharps
+            {
+                if (match.length() > 0)
+                {
+                    if (accidentals < 0)
+                    {
+                        throw std::invalid_argument(BOTH_ACCIDENTALS_FOUND);
+                    }
+
+                    accidentals = static_cast<accidentals_value>(match.length());
+                }
+                break;
+            }
+            case 3:  // Third match group should be the scale degree
+            {
+                if (match.length() > 0)
+                {
+                    sd = static_cast<scale_degree_value>(std::stoi(match.str()));
+                }
+                else
+                {
+                    throw std::invalid_argument(NO_SCALE_DEGREE);
+                }
+            }
+        }
+        ++i;
+    }
+
+    return {sd, accidentals};
+}
+
+std::istream& operator>>(std::istream& stream, Scale& scale)
+{
+    std::string line;
+    std::getline(stream, line);
+
+    std::stringstream line_stream(line);
+    std::string scale_degree_str;
+
+    scale.clear();
+
+    while (std::getline(line_stream, scale_degree_str, scale_degree_seperator))
+    {
+        scale._scale_degrees.emplace_back(Scale::parse_scale_degree_string(scale_degree_str));
+    }
+
+    return stream;
+}
+
+std::ostream& operator<<(std::ostream& stream, const Scale& scale)
+{
+    bool first = true;
+    for (auto&& sd : scale._scale_degrees)
+    {
+        if (!first) stream << scale_degree_seperator << ' ';
+        if (sd.second < 0)
+        {
+            for (accidentals_value acc_i = 0; acc_i > sd.second; --acc_i)
+            {
+                stream << downward_accidental;
+            }
+        }
+        else if (sd.second > 0)
+        {
+            for (accidentals_value acc_i = 0; acc_i > sd.second; ++acc_i)
+            {
+                stream << upward_accidental;
+            }
+        }
+        stream << sd.first;
+
+        first = false;
+    }
+    return stream;
+}
+
+// ====SCALE====
+// ====REALISEDSCALE====
+
+class RealisedScale
+{
+   private:
+    std::vector<Note> _notes;
+    std::vector<Note> realise_scale(const Note& root, const Scale& scale);
+
+   public:
+    RealisedScale() = default;
+    RealisedScale(const Note& root, const Scale& scale);
+
+    friend std::ostream& operator<<(std::ostream& stream, const RealisedScale& scale);
+};
+
+std::vector<Note> RealisedScale::realise_scale(const Note& root, const Scale& scale)
+{
+    std::vector<Note> result;
+    for (auto&& sd : scale)
+    {
+        if (sd.first == 1)
+        {
+            result.emplace_back(root);
+        }
+        else
+        {
+            result.emplace_back(Note{root, sd.first, sd.second});
+        }
+    }
+
+    return result;
+}
+
+RealisedScale::RealisedScale(const Note& root, const Scale& scale)
+{
+    _notes = std::move(realise_scale(root, scale));
+}
+
+std::ostream& operator<<(std::ostream& stream, const RealisedScale& scale)
+{
+    bool first = true;
+    for (auto&& note : scale._notes)
+    {
+        if (!first) stream << scale_degree_seperator << ' ';
+        first = false;
+        stream << note;
+    }
+    return stream;
+}
+
+// ====REALISEDSCALE====
 
 #endif

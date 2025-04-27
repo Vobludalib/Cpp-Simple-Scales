@@ -1,16 +1,28 @@
+#include <fstream>
 #include <iostream>
+
+// #define GERMAN_NAMING
 
 #include "musiclibrary.hpp"
 
 int main()
 {
-    auto root = Note("Bb4");
-    std::cout << "Root: " << root << std::endl;
-    auto sd = Note(root, 11, 0);
-    std::cout << sd << std::endl;
-    // for (size_t i = 1; i < 16; ++i)
-    // {
-    //     auto sd = Note(root, i, 0);
-    //     std::cout << i << ": " << sd << std::endl;
-    // }
+    std::ifstream file;
+    file.open("./scales.txt");
+
+    if (!file.good())
+    {
+        throw std::exception();
+    }
+
+    Scale scale;
+    while (file)
+    {
+        file >> scale;
+        std::cout << scale << std::endl;
+        auto realised_scale = RealisedScale{Note{"C4"}, scale};
+        std::cout << realised_scale << std::endl;
+    }
+
+    file.close();
 }
