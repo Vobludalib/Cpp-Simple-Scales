@@ -1,4 +1,18 @@
 Name;Difficulty;Scale
 Major;Easy;1,2,3,4,5,6,7
 Natural Minor;Easy;1,2,b3,4,5,b6,b7
+Melodic Minor;Easy;1,2,b3,4,5,6,b7
+Harmonic Minor;Easy;1,2,b3,4,5,b6,7
 Lydian;Medium;1,2,3,#4,5,6,7
+Mixolydian;Medium;1,2,3,4,5,6,b7
+Dorian;Medium;1,2,b3,4,5,6,7
+Phrygian;Medium;1,b2,b3,4,5,b6,b7
+Locrian;Medium;1,b2,b3,b4,5,b6,b7
+Blues;Medium;1,b3,4,#4,5,b7
+Major pentatonic;Medium;1,2,3,5,6
+Minor pentatonic;Medium;1,b3,4,5,b7
+Bebop;Hard;1,2,3,4,5,6,b7,7
+Lydian dominant;Hard;1,2,3,#4,5,6,b7
+Mixolydian b6;Hard;1,2,3,4,5,b6,b7
+Phrygian #6;Hard;1,b2,b3,4,5,6,b7
+Locrian #2;Hard;1,2,b3,b4,5,b6,b7
