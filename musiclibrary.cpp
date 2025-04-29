@@ -483,7 +483,7 @@ std::ostream& operator<<(std::ostream& stream, const RealisedScale& scale)
     {
         if (!first) stream << SCALE_DEGREE_SEPERATOR << ' ';
         first = false;
-        stream << note;
+        stream << note.get_name();
     }
     return stream;
 }
