@@ -1,8 +1,11 @@
 #include "applicationmanager.hpp"
 
 #include <algorithm>
+#include <fstream>
 #include <random>
 #include <ranges>
+
+#include "scalemanager.hpp"
 
 void ApplicationManager::generate_session(size_t number_of_questions,
                                           ScaleManager::Difficulty difficulty)
@@ -61,12 +64,36 @@ void ApplicationManager::load_answer(std::istream& stream)
     if (guessed_index == _session[_question_index]._correct_index)
     {
         ++_correct;
+        _correct_questions.emplace_back(true);
+    }
+    else
+    {
+        _correct_questions.emplace_back(false);
     }
 }
 
 // This is a very dumb way of doing it, but it works for now. Would be changed with proper external
-// library support, but this
+// library support, but this is good enough for now
 void ApplicationManager::clear_stream(std::ostream& stream)
 {
     for (size_t i = 0; i < 20; ++i) stream << std::endl;
+}
+
+void ApplicationManager::save_session_results(const std::string& file_path)
+{
+    std::ofstream file(file_path);
+    if (!file.good())
+    {
+        throw std::runtime_error(BAD_FILE_OPEN);
+    }
+
+    for (size_t i = 0; i < _session.size(); ++i)
+    {
+        file << _session[i]._rs.get_scale().get_root().get_name() << ' '
+             << _session[i]._rs.get_name() << CSV_SEPERATOR
+             << (size_t)_session[i]._rs.get_difficulty() << CSV_SEPERATOR
+             << (_correct_questions[i] ? CORRECT : INCORRECT) << std::endl;
+    }
+
+    file.close();
 }

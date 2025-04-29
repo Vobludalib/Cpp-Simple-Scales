@@ -7,6 +7,8 @@
 constexpr char FORGOT_TO_LOAD_SCALES[] = "No scales found while generating session!";
 constexpr char TOO_MANY_QUESTION_PRINTS[] =
     "Tried printing next question when there are none left!";
+constexpr char CORRECT[] = "CORRECT";
+constexpr char INCORRECT[] = "INCORRECT";
 
 constexpr size_t NUMBER_OF_CHOICES = 4;
 
@@ -45,6 +47,7 @@ class ApplicationManager
     // AP owns the vector of Questions
     std::vector<Question> _session;
     size_t _question_index = 0;
+    std::vector<bool> _correct_questions;
     size_t _correct = 0;
 
    public:

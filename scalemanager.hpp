@@ -7,7 +7,7 @@
 
 #include "musiclibrary.hpp"
 
-constexpr char BAD_FILE_OPEN[] = "Unable to open the file!";
+constexpr char BAD_FILE_OPEN[] = "Unable to open/write the file!";
 constexpr char INVALID_DIFFICULTY[] =
     "Invalid difficulty value found during parsing file! Row: {}, Column: {}";
 constexpr char TOO_MANY_SAMPLES[] = "Too many samples requested!";

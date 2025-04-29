@@ -219,6 +219,7 @@ class RealisedScale
    public:
     RealisedScale() = default;
     RealisedScale(const Note& root, const Scale& scale);
+    inline const Note& get_root() const { return _notes[0]; }
 
     friend std::ostream& operator<<(std::ostream& stream, const RealisedScale& scale);
 };
