@@ -83,6 +83,7 @@ void ScaleManager::parse_fstream(std::ifstream& stream)
             ++column;
         }
 
+        _scale_names.emplace_back(name);
         _entries.emplace_back(std::move(scale), std::move(difficulty), std::move(name));
         ++row;
     }

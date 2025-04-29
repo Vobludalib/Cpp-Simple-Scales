@@ -53,6 +53,7 @@ class ScaleManager
     // vector
     std::vector<ScaleEntry<Scale>> _entries;
     std::multimap<Difficulty, ScaleEntry<Scale>*> _difficulty_map;
+    std::vector<std::string> _scale_names;
 
     inline static Note _middle_c{};
     inline static std::vector<Note> _possible_roots{
@@ -80,6 +81,8 @@ class ScaleManager
     void load_scales_from_file(std::string path);
     std::vector<ScaleManager::ScaleEntry<RealisedScale>> generate_realised_scales_by_difficulty(
         size_t number_of_scales, ScaleManager::Difficulty difficulty);
+
+    friend class ApplicationManager;
 };
 
 #endif
