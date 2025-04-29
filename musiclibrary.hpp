@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+// Constants kept together here, as this library should be able to used without being attached to
+// this specific application
 constexpr char NO_MIDI_INFORMATION[] = "Trying to get MIDI of a Note without MIDI information.";
 constexpr char NO_NAME_INFORMATION[] = "Trying to get name of a Note without name information.";
 constexpr char NOT_BOTH_INFORMATION[] =
@@ -35,8 +37,6 @@ constexpr midi_value NOTES_PER_OCTAVE = 12;
 constexpr char NOTE_PRINT_SEPERATOR = '/';
 constexpr char SCALE_DEGREE_SEPERATOR = ',';
 
-// TODO: Change this behaviour into a formatter class
-// Setting default for which system to use
 #if !defined(GERMAN_NAMING) && !defined(FRENCH_NAMING)
 #define ENGLISH_NAMING
 #endif
@@ -162,9 +162,9 @@ class Note
             throw std::runtime_error(NO_MIDI_INFORMATION);
     }
 
-    std::string get_name();
+    std::string& get_name();
     std::string get_name() const;
-    std::string get_name_and_midi_string();
+    std::string& get_name_and_midi_string();
     std::string get_name_and_midi_string() const;
 
     ~Note() = default;

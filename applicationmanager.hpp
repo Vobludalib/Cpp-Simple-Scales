@@ -1,14 +1,9 @@
 #ifndef APPLICATIONMANAGER
 #define APPLICATIONMANAGER
 
+#include "constants.hpp"
 #include "musiclibrary.hpp"
 #include "scalemanager.hpp"
-
-constexpr char FORGOT_TO_LOAD_SCALES[] = "No scales found while generating session!";
-constexpr char TOO_MANY_QUESTION_PRINTS[] =
-    "Tried printing next question when there are none left!";
-constexpr char CORRECT[] = "CORRECT";
-constexpr char INCORRECT[] = "INCORRECT";
 
 constexpr size_t NUMBER_OF_CHOICES = 4;
 

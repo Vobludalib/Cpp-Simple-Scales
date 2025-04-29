@@ -84,7 +84,8 @@ void ScaleManager::parse_fstream(std::ifstream& stream)
         }
 
         _scale_names.emplace_back(name);
-        _entries.emplace_back(std::move(scale), std::move(difficulty), std::move(name));
+        _entries.push_back(
+            std::make_shared<ScaleManager::ScaleEntry<Scale>>(scale, difficulty, name));
         ++row;
     }
 }
@@ -93,7 +94,7 @@ void ScaleManager::build_maps()
 {
     for (auto&& entry : _entries)
     {
-        _difficulty_map.emplace(entry.get_difficulty(), &entry);
+        _difficulty_map.emplace((*entry).get_difficulty(), entry);
     }
 }
 
@@ -103,7 +104,7 @@ void ScaleManager::load_scales_from_file(std::string path)
     build_maps();
 }
 
-std::vector<ScaleManager::ScaleEntry<Scale>*> ScaleManager::get_random_scales(
+std::vector<std::shared_ptr<ScaleManager::ScaleEntry<Scale>>> ScaleManager::get_random_scales(
     size_t number_of_scales)
 {
     if (number_of_scales > _entries.size())
@@ -111,16 +112,16 @@ std::vector<ScaleManager::ScaleEntry<Scale>*> ScaleManager::get_random_scales(
         throw std::invalid_argument(TOO_MANY_SAMPLES);
     }
 
-    std::vector<ScaleEntry<Scale>*> pointers;
+    std::vector<std::shared_ptr<ScaleEntry<Scale>>> pointers;
     pointers.reserve(_entries.size());
 
     // Fill with pointers
     for (auto& entry : _entries)
     {
-        pointers.push_back(&entry);
+        pointers.push_back(entry);
     }
 
-    std::vector<ScaleEntry<Scale>*> result;
+    std::vector<std::shared_ptr<ScaleEntry<Scale>>> result;
     result.reserve(number_of_scales);
 
     std::random_device rd;
@@ -133,10 +134,11 @@ std::vector<ScaleManager::ScaleEntry<Scale>*> ScaleManager::get_random_scales(
     return result;
 }
 
-std::vector<ScaleManager::ScaleEntry<Scale>*> ScaleManager::get_random_scales_by_difficulty(
-    size_t number_of_scales, ScaleManager::Difficulty difficulty)
+std::vector<std::shared_ptr<ScaleManager::ScaleEntry<Scale>>>
+ScaleManager::get_random_scales_by_difficulty(size_t number_of_scales,
+                                              ScaleManager::Difficulty difficulty)
 {
-    std::vector<ScaleManager::ScaleEntry<Scale>*> sampled_scales;
+    std::vector<std::shared_ptr<ScaleManager::ScaleEntry<Scale>>> sampled_scales;
 
     std::random_device rd;
     std::mt19937 gen(rd());

@@ -3,15 +3,11 @@
 
 #include <fstream>
 #include <map>
+#include <memory>
 #include <string>
 
+#include "constants.hpp"
 #include "musiclibrary.hpp"
-
-constexpr char BAD_FILE_OPEN[] = "Unable to open/write the file!";
-constexpr char INVALID_DIFFICULTY[] =
-    "Invalid difficulty value found during parsing file! Row: {}, Column: {}";
-constexpr char TOO_MANY_SAMPLES[] = "Too many samples requested!";
-constexpr char CSV_SEPERATOR = ';';
 
 class ScaleManager
 {
@@ -51,8 +47,8 @@ class ScaleManager
 
     // Vector actually owns all the entries, the other containers just reference elements of the
     // vector
-    std::vector<ScaleEntry<Scale>> _entries;
-    std::multimap<Difficulty, ScaleEntry<Scale>*> _difficulty_map;
+    std::vector<std::shared_ptr<ScaleEntry<Scale>>> _entries;
+    std::multimap<Difficulty, std::shared_ptr<ScaleEntry<Scale>>> _difficulty_map;
     std::vector<std::string> _scale_names;
 
     inline static Note _middle_c{};
@@ -71,9 +67,11 @@ class ScaleManager
     void parse_fstream(std::ifstream& stream);
     void build_maps();
 
-    std::vector<ScaleEntry<Scale>*> get_random_scales(size_t number_of_scales);
-    std::vector<ScaleEntry<Scale>*> get_random_scales_by_difficulty(
+    std::vector<std::shared_ptr<ScaleEntry<Scale>>> get_random_scales(size_t number_of_scales);
+    std::vector<std::shared_ptr<ScaleEntry<Scale>>> get_random_scales_by_difficulty(
         size_t number_of_scales, ScaleManager::Difficulty difficulty);
+    // We can use raw pointers here, as the vector of Notes _possible_roots is constructed once and
+    // never changes, so the vector entries don't move
     std::vector<Note*> get_random_roots_by_difficulty(size_t number_of_roots,
                                                       ScaleManager::Difficulty difficulty);
 

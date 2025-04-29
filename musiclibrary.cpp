@@ -285,7 +285,7 @@ std::string Note::generate_name_as_string() const
     return stream.str();
 }
 
-std::string Note::get_name()
+std::string& Note::get_name()
 {
     if (!(check_has_name())) throw std::runtime_error(NO_NAME_INFORMATION);
     if (have_to_regenerate_name) name_as_string = generate_name_as_string();
@@ -319,7 +319,7 @@ std::string Note::generate_complex_name_as_string() const
     return stream.str();
 }
 
-std::string Note::get_name_and_midi_string()
+std::string& Note::get_name_and_midi_string()
 {
     if (!check_has_midi() || !check_has_name()) throw std::runtime_error(NOT_BOTH_INFORMATION);
     if (have_to_regenerate_name) complex_name = generate_complex_name_as_string();
