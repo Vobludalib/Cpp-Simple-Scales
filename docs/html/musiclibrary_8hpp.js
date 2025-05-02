@@ -1,0 +1,28 @@
+var musiclibrary_8hpp =
+[
+    [ "Note", "class_note.html", "class_note" ],
+    [ "Scale", "class_scale.html", "class_scale" ],
+    [ "RealisedScale", "class_realised_scale.html", "class_realised_scale" ],
+    [ "ENGLISH_NAMING", "musiclibrary_8hpp.html#ae8fcccbc0ae9eb9f3f961ed4a6ce8f8d", null ],
+    [ "accidentals_value", "musiclibrary_8hpp.html#aa2ef396aa10762e1320f9e2a784248d6", null ],
+    [ "midi_value", "musiclibrary_8hpp.html#a1f84b2b272d0a82bc6020801923162b4", null ],
+    [ "scale_degree_value", "musiclibrary_8hpp.html#ad0e944c5a7870880e7415839b4abb62f", null ],
+    [ "BAD_SCALE_DEGREE_INDEX", "musiclibrary_8hpp.html#a99eecfe14d751d0c6996ce98c7e3da6f", null ],
+    [ "BOTH_ACCIDENTALS_FOUND", "musiclibrary_8hpp.html#acd1014ec464af9fb396e1a01624a0455", null ],
+    [ "CREATION_NOT_BOTH_INFORMATION", "musiclibrary_8hpp.html#ae47a5f3585d1cfe959ac568045eea22b", null ],
+    [ "downward_accidental", "musiclibrary_8hpp.html#ad15c4c028a199ebf59a42ef658b307b0", null ],
+    [ "INDEX_BASE_ERROR", "musiclibrary_8hpp.html#a256b6920734bdd3a580e781fce90d88c", null ],
+    [ "INVALID_NOTE_NAME_FOUND", "musiclibrary_8hpp.html#a446a8bf3b95790e88f78a224fa0a46e6", null ],
+    [ "MIDDLE_C_MIDI", "musiclibrary_8hpp.html#a7532e28374f18e02a212d19d5af75921", null ],
+    [ "MIDDLE_C_OCTAVE", "musiclibrary_8hpp.html#af8e400122c1031aac16e24281014da86", null ],
+    [ "NO_MIDI_INFORMATION", "musiclibrary_8hpp.html#a964dbcf98ad9cc8e33f072b3f5aa0a43", null ],
+    [ "NO_NAME_INFORMATION", "musiclibrary_8hpp.html#a31715affa83af59ec895ef40e0279f34", null ],
+    [ "NO_NOTE_INFORMATION", "musiclibrary_8hpp.html#a835475001bcec39979d8843e49f49041", null ],
+    [ "NO_SCALE_DEGREE", "musiclibrary_8hpp.html#abb030e1eeb96ee75ac7030798f547909", null ],
+    [ "NOT_BOTH_INFORMATION", "musiclibrary_8hpp.html#a8feb95db7e4ceafd14a8df7cb3f786a2", null ],
+    [ "NOTE_PRINT_SEPERATOR", "musiclibrary_8hpp.html#a02c5bc14978ca73f2fed37ba4aab877b", null ],
+    [ "NOTES_PER_OCTAVE", "musiclibrary_8hpp.html#ae3d6ece362816609cbc7a63700c8fa18", null ],
+    [ "NUMBER_OF_SCALE_DEGREES", "musiclibrary_8hpp.html#a92e5bf8fb0ae950f78580f24e67e1f9c", null ],
+    [ "SCALE_DEGREE_SEPERATOR", "musiclibrary_8hpp.html#ae8a1fe212df341be5cb3d1956c8daaac", null ],
+    [ "upward_accidental", "musiclibrary_8hpp.html#a8539c5870abc3476cbdcdd848c8810db", null ]
+];
