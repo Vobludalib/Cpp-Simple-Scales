@@ -23,11 +23,15 @@ A RealisedScale is created by pairing a Scale with a Note that acts as its root,
 
 In reality, both Scale and RealisedScale are just wrappers over an std::vector.
 
+Constants related to the library are stored inside the ```musiclibrary.hpp``` file itself so that this library can be reused outside of the context of this applicaton.
+
 # The application logic
 
 The application logic is handled by ApplicationManager from ```applicationmanager.hpp```, which handles the reading of files, generation of questions, correctly outputting questions to the console, reading user input, and saving the results.
 
 The ApplicationManager contains an instance of ScaleManager, which is responsible for interacting with all the ````musiclibrary.hpp``` classes and the lower-level logic of how to correctly generate the questions.
+
+Constants related to application logic and exception text is stored in ```constants.hpp```.
 
 # Input .csv format
 
