@@ -44,11 +44,11 @@ int main(int argc, char* argv[])
     // Main program loop; printing questions and reading answers until we finish the session
     while (am.can_print_more())
     {
+        am.clear_stream(std::cout);
         am.print_header(std::cout);
         am.print_question(std::cout);
         am.load_answer(std::cin);
         am.next_question();
-        am.clear_stream(std::cout);
     }
 
     // Save the results to a .csv file
