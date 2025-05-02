@@ -22,6 +22,7 @@ void ApplicationManager::generate_session(size_t number_of_questions,
 
     for (auto&& scale : generated_scales)
     {
+        // Need to copy because of std::ranges::shuffle
         std::vector<std::string> possible_names{scale.get_name()};
 
         auto not_same_names = std::views::filter(
@@ -42,6 +43,7 @@ void ApplicationManager::generate_session(size_t number_of_questions,
 
 void ApplicationManager::print_header(std::ostream& stream)
 {
+    // Not going to move all this into constants, they only appear in one method
     stream << "On question " << _question_index + 1 << '/' << _session.size() << std::endl;
 }
 
@@ -72,12 +74,8 @@ void ApplicationManager::load_answer(std::istream& stream)
     }
 }
 
-// This is a very dumb way of doing it, but it works for now. Would be changed with proper external
-// library support, but this is good enough for now
-void ApplicationManager::clear_stream(std::ostream& stream)
-{
-    for (size_t i = 0; i < 20; ++i) stream << std::endl;
-}
+// Uses ANSI characters to wipe the terminal. Should work cross-platform to some extent
+void ApplicationManager::clear_stream(std::ostream& stream) { stream << "\033[2J\033[H"; }
 
 void ApplicationManager::save_session_results(const std::string& file_path)
 {
