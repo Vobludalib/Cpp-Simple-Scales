@@ -482,19 +482,6 @@ class Scale
     // The default copying and moving constructors/assignment operators work just fine.
 
     /**
-     * @brief Clears the underlying std::vector.
-     *
-     */
-    inline void clear() { return _scale_degrees.clear(); }
-
-    /**
-     * @brief Returns the amount of scale degrees.
-     *
-     * @return size_t
-     */
-    inline size_t size() { return _scale_degrees.size(); }
-
-    /**
      * @brief Operator for parsing a csv input stream into a scale object.
      *
      * @param stream
@@ -511,6 +498,19 @@ class Scale
      * @return std::ostream&
      */
     friend std::ostream& operator<<(std::ostream& stream, const Scale& scale);
+
+    /**
+     * @brief Clears the underlying std::vector.
+     *
+     */
+    inline void clear() { return _scale_degrees.clear(); }
+
+    /**
+     * @brief Returns the amount of scale degrees.
+     *
+     * @return size_t
+     */
+    inline size_t size() { return _scale_degrees.size(); }
 
     /**
      * @brief Retrieves the .begin() iterator of the underlying std::vector.
@@ -629,6 +629,77 @@ class RealisedScale
      * @return std::ostream&
      */
     friend std::ostream& operator<<(std::ostream& stream, const RealisedScale& scale);
+
+    /**
+     * @brief Clears the underlying std::vector.
+     *
+     */
+    inline void clear() { return _notes.clear(); }
+
+    /**
+     * @brief Returns the amount of scale degrees.
+     *
+     * @return size_t
+     */
+    inline size_t size() { return _notes.size(); }
+
+    /**
+     * @brief Retrieves the .begin() iterator of the underlying std::vector.
+     *
+     * @return auto
+     */
+    inline auto begin() { return _notes.begin(); }
+
+    /**
+     * @brief Retrieves the .end() iterator of the underlying std::vector.
+     *
+     * @return auto
+     */
+    inline auto end() { return _notes.end(); }
+
+    /**
+     * @brief Retrieves the const .begin() iterator of the underlying std::vector.
+     *
+     * @return auto
+     */
+    inline auto begin() const { return _notes.begin(); }
+
+    /**
+     * @brief Retrieves the const .end() iterator of the underlying std::vector.
+     *
+     * @return auto
+     */
+    inline auto end() const { return _notes.end(); }
+
+    /**
+     * @brief Retrieves the const .cbegin() iterator of the underlying std::vector.
+     *
+     * @return auto
+     */
+    inline auto cbegin() const { return _notes.cbegin(); }
+
+    /**
+     * @brief Retrieves the const .cend() iterator of the underlying std::vector.
+     *
+     * @return auto
+     */
+    inline auto cend() const { return _notes.cend(); }
+
+    /**
+     * @brief Retrieves the index'th element of the underlying std::vector.
+     *
+     * @param index
+     * @return scale_degree&
+     */
+    inline Note& operator[](size_t index) { return _notes[index]; }
+
+    /**
+     * @brief Retrieves the const index'th element of the underlying std::vector.
+     *
+     * @param index
+     * @return scale_degree&
+     */
+    inline const Note& operator[](size_t index) const { return _notes[index]; }
 };
 
 // ====REALISEDSCALE====
