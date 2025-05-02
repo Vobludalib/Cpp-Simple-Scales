@@ -128,6 +128,7 @@ std::vector<std::shared_ptr<ScaleManager::ScaleEntry<Scale>>> ScaleManager::get_
     std::mt19937 gen(rd());
 
     // Sample n pointers into result
+    // Using the std::ranges sampling method
     std::ranges::sample(pointers, std::back_inserter(result), static_cast<long>(number_of_scales),
                         gen);
 
@@ -150,6 +151,9 @@ ScaleManager::get_random_scales_by_difficulty(size_t number_of_scales,
     std::vector<size_t> diff_counts{_difficulty_map.count(ScaleManager::Difficulty::EASY),
                                     _difficulty_map.count(ScaleManager::Difficulty::MEDIUM),
                                     _difficulty_map.count(ScaleManager::Difficulty::HARD)};
+
+    // In this method we have to the sampling more manually, as std::ranges::sample does not support
+    // weighted sampling.
 
     std::vector<size_t> sampled_difficulties;
     for (size_t i = 0; i < number_of_scales; ++i)
