@@ -74,13 +74,25 @@ void ScaleManager::parse_fstream(std::ifstream& stream)
                 }
                 case (2):
                 {
-                    scale.clear();
-                    std::istringstream sstream(column_string);
-                    sstream >> scale;
+                    try
+                    {
+                        scale.clear();
+                        std::istringstream sstream(column_string);
+                        sstream >> scale;
+                    }
+                    catch (std::exception& e)
+                    {
+                        throw std::runtime_error(std::format(FAILED_PARSING_SCALE, row));
+                    }
                     break;
                 }
             }
             ++column;
+        }
+
+        if (column != 3)
+        {
+            throw std::runtime_error(std::format(NOT_ENOUGH_COLUMNS, row));
         }
 
         _scale_names.emplace_back(name);

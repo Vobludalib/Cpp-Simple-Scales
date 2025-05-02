@@ -9,6 +9,8 @@ constexpr char BAD_FILE_OPEN[] = "Unable to open/write the file!";
 constexpr char INVALID_DIFFICULTY[] =
     "Invalid difficulty value found during parsing file! Row: {}, Column: {}";
 constexpr char TOO_MANY_SAMPLES[] = "Too many samples requested!";
+constexpr char NOT_ENOUGH_COLUMNS[] = "Didn't read the expected three columns on Row: {}";
+constexpr char FAILED_PARSING_SCALE[] = "Failed parsing the scale on Row: {}";
 
 // CSV-related
 constexpr char CORRECT[] = "CORRECT";
