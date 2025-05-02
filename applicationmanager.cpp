@@ -85,6 +85,8 @@ void ApplicationManager::save_session_results(const std::string& file_path)
         throw std::runtime_error(BAD_FILE_OPEN);
     }
 
+    file << RESULTS_FILE_HEADER << std::endl;
+
     for (size_t i = 0; i < _session.size(); ++i)
     {
         file << _session[i]._rs.get_scale().get_root().get_name() << ' '

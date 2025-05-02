@@ -6,6 +6,7 @@
 #include "scalemanager.hpp"
 
 constexpr size_t NUMBER_OF_CHOICES = 4;
+constexpr char RESULTS_FILE_HEADER[] = "Name;Difficulty;Correctness";
 
 /**
  * @brief Class handling the entire application logic
