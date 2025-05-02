@@ -199,6 +199,14 @@ Note::generate_naming_and_midi_from_root_and_scale_degree(const Note& scale_root
         // This entire block of code took up about 30% of the project time, as trying to transcribe
         // the intuitive, yet complex rules of scale degree pitch spelling into a formal system is
         // difficulty. Who'd have guessed?
+
+        // This code block is responsible for figuring out the correct note name and accidental
+        // based on the expected midi difference from the root based on the scale degree and
+        // accidentals.
+
+        // This is needed, as the halfnote steps between E/F and B/C present issues with this.
+        // For example, the minor 3rd from C is Eb (accidental present), but the minor third from E
+        // is G (no accidental).
         size_t number_of_note_names = note_names.size();
         scale_degree_value root_base_degree = scale_root.names_.value()[0]._base_degree;
         scale_degree_value new_base_degree =
