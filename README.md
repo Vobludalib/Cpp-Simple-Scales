@@ -9,7 +9,13 @@ This is a simple command line tool for practising recognising western musical sc
 
 # Installation
 
-Compile this with any C++ compiler using C++20 (or later). Launch the compiled output as normal with command line arguments.
+I have included a CMakeLists.txt file so you can proceed using CMake.
+
+There is also a Makefile I personally used to compile in my environment (VSCode, g++ on Mac OS).
+
+C++20 is required.
+
+Launch the compiled output as normal with command line arguments.
 
 # Usage
 
