@@ -4,14 +4,16 @@
 
 Note::NamingInformation::NamingInformation(scale_degree_value base_degree,
                                            accidentals_value accidentals)
-    : base_degree_(base_degree), accidentals_(accidentals)
+    : _base_degree(base_degree), _accidentals(accidentals)
 {
+    // Checking for base_degree referencing a note name that does not exist.
     if (base_degree > note_names.size() - 1)
     {
         throw std::invalid_argument(BAD_SCALE_DEGREE_INDEX);
     }
 }
 
+// We set octave using some simple arithmetic
 Note::MIDIInformation::MIDIInformation(midi_value midi_val)
     : midi_value_(midi_val),
       octave_(MIDDLE_C_OCTAVE + ((midi_val - MIDDLE_C_MIDI) / NOTES_PER_OCTAVE) -
@@ -19,6 +21,7 @@ Note::MIDIInformation::MIDIInformation(midi_value midi_val)
 {
 }
 
+// Default constructor default to Middle C
 Note::Note() : midi_(MIDDLE_C_MIDI) { names_ = {NamingInformation{0, 0}}; }
 
 // For any MIDI value that requires an accidental, both variants are generated
@@ -74,6 +77,7 @@ Note::generate_naming_and_midi_from_string(const std::string& name)
     accidentals_value accidentals = 0;
     int octave = 0;
     bool octave_found = false;
+    // Iterating and switching over the match groups
     for (auto&& match : matches)
     {
         switch (i)
@@ -86,7 +90,7 @@ Note::generate_naming_and_midi_from_string(const std::string& name)
                 {
                     bool is_ok = false;
 #ifdef GERMAN_NAMING
-                    // Special-casing for the German naming system
+                    // Special-casing for the German naming system (i.e. H flat becomes a B)
                     if (match.str() == "B")
                     {
                         note_name_roots_index = 6;
@@ -94,10 +98,7 @@ Note::generate_naming_and_midi_from_string(const std::string& name)
                         is_ok = true;
                     }
 #endif
-                    if (!is_ok)
-                        throw std::invalid_argument(
-                            "Note name root passed does not appear in the list of valid note name "
-                            "roots!");
+                    if (!is_ok) throw std::invalid_argument(INVALID_NOTE_NAME_FOUND);
                 }
                 note_name_roots_index = static_cast<size_t>(index);
                 break;
@@ -139,6 +140,7 @@ Note::generate_naming_and_midi_from_string(const std::string& name)
     std::optional<MIDIInformation> mi;
     if (octave_found)
     {
+        // MIDI arithmetic
         midi_value midi_offset_from_scale_c = static_cast<midi_value>(
             note_name_roots_index * 2 - (note_name_roots_index > 2 ? 1 : 0));
         midi_value midi = MIDDLE_C_MIDI + ((octave - MIDDLE_C_OCTAVE) * NOTES_PER_OCTAVE) +
@@ -151,6 +153,7 @@ Note::generate_naming_and_midi_from_string(const std::string& name)
 
 Note::Note(const std::string& name)
 {
+    // Oooooooh, fancy structured binding, look at this fancy C++ concept
     auto [naming, midi] = generate_naming_and_midi_from_string(name);
     names_ = {naming};
     midi_ = midi;
@@ -180,6 +183,9 @@ Note::generate_naming_and_midi_from_root_and_scale_degree(const Note& scale_root
     std::optional<NamingInformation> namei;
     std::optional<MIDIInformation> midii;
 
+    // We have to do some pretty gnarly if branching here due to the different outcomes based on
+    // what scale_root looks like.
+
     if (scale_root.midi_.has_value())
     {
         midi_value scale_degree_midi_diff =
@@ -190,22 +196,25 @@ Note::generate_naming_and_midi_from_root_and_scale_degree(const Note& scale_root
 
     if (scale_root.names_.has_value() && scale_root.names_.value().size() == 1)
     {
+        // This entire block of code took up about 30% of the project time, as trying to transcribe
+        // the intuitive, yet complex rules of scale degree pitch spelling into a formal system is
+        // difficulty. Who'd have guessed?
         size_t number_of_note_names = note_names.size();
-        scale_degree_value root_base_degree = scale_root.names_.value()[0].base_degree_;
+        scale_degree_value root_base_degree = scale_root.names_.value()[0]._base_degree;
         scale_degree_value new_base_degree =
             (root_base_degree + scale_degree) % number_of_note_names;
         midi_value root_midi_offset_from_c = scale_degree_to_midi_diff.at(root_base_degree) +
-                                             scale_root.names_.value()[0].accidentals_;
-        midi_value scale_degree_without_accidentals_midi_offset_from_c =
+                                             scale_root.names_.value()[0]._accidentals;
+        midi_value scale_degree_without__accidentalsmidi_offset_from_c =
             scale_degree_to_midi_diff.at(new_base_degree);
-        if (scale_degree_without_accidentals_midi_offset_from_c < root_midi_offset_from_c)
+        if (scale_degree_without__accidentalsmidi_offset_from_c < root_midi_offset_from_c)
         {
-            scale_degree_without_accidentals_midi_offset_from_c += NOTES_PER_OCTAVE;
+            scale_degree_without__accidentalsmidi_offset_from_c += NOTES_PER_OCTAVE;
         }
         midi_value expected_midi_diff_from_root =
             scale_degree_to_midi_diff.at(scale_degree % number_of_note_names) + accidentals;
         midi_value unaccidented_midi_diff_from_root =
-            scale_degree_without_accidentals_midi_offset_from_c - root_midi_offset_from_c;
+            scale_degree_without__accidentalsmidi_offset_from_c - root_midi_offset_from_c;
         accidentals_value needed_accidentals = static_cast<accidentals_value>(
             expected_midi_diff_from_root - unaccidented_midi_diff_from_root);
         namei = {static_cast<scale_degree_value>(new_base_degree), needed_accidentals};
@@ -247,28 +256,28 @@ std::string Note::generate_name_as_string() const
         if (!first) stream << NOTE_PRINT_SEPERATOR;
 
 #ifdef GERMAN_NAMING
-        // German special casing
-        if (naming_info.base_degree_ == 6 && naming_info.accidentals_ < 0)
+        // German special casing for H flat becoming B
+        if (naming_info._base_degree == 6 && naming_info._accidentals < 0)
         {
             stream << 'B';
         }
         else
         {
-            stream << note_names[naming_info.base_degree_];
+            stream << note_names[naming_info._base_degree];
         }
 #endif
 #ifndef GERMAN_NAMING
-        stream << note_names[naming_info.base_degree_];
+        stream << note_names[naming_info._base_degree];
 #endif
         std::string accidental =
-            naming_info.accidentals_ < 0 ? downward_accidental : upward_accidental;
+            naming_info._accidentals < 0 ? downward_accidental : upward_accidental;
 
         int amount_of_accidentals =
-            naming_info.accidentals_ < 0 ? naming_info.accidentals_ * -1 : naming_info.accidentals_;
+            naming_info._accidentals < 0 ? naming_info._accidentals * -1 : naming_info._accidentals;
 
 #ifdef GERMAN_NAMING
         // German special casing
-        if (naming_info.base_degree_ == 6 && naming_info.accidentals_ < 0)
+        if (naming_info._base_degree == 6 && naming_info._accidentals < 0)
         {
             amount_of_accidentals -= 1;
         }
@@ -336,6 +345,7 @@ std::string Note::get_name_and_midi_string() const
     return generate_complex_name_as_string();
 }
 
+// Tries to print out as much information as it can
 std::ostream& operator<<(std::ostream& stream, const Note& note)
 {
     if (note.check_has_midi() && note.check_has_name())
