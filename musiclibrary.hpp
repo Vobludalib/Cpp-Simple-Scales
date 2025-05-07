@@ -172,7 +172,7 @@ class Note
      *
      * This only covers enharmonics up to one accidental (F#/Gb, but not Abbb or E##)
      *
-     * @param midi
+     * @param midi - the MIDI value that the note should contain
      * @return std::vector<NamingInformation>
      */
     std::vector<NamingInformation> generate_naming_information_from_midi(midi_value midi);
@@ -184,7 +184,7 @@ class Note
      * The MIDIInformation is only generated if the note is in the form "C{octave within MIDI
      * range}", and not just "C".
      *
-     * @param name
+     * @param name - string reference to the note name
      * @return std::tuple<NamingInformation, std::optional<MIDIInformation>>
      */
     std::tuple<NamingInformation, std::optional<MIDIInformation>>
@@ -201,9 +201,10 @@ class Note
      *
      * MIDIInformation is only generated if scale_root has MIDIInformation we can work from.
      *
-     * @param scale_root
-     * @param scale_degree
-     * @param accidentals
+     * @param scale_root - reference to a Note that represents the scale's root
+     * @param scale_degree - which scale degree should be generated; uses 1-based indexing
+     * @param accidentals - which way and by how much accidentals should be applied (-1 is flat, -2
+     * is double flat, +1 is sharp etc.)
      * @return std::tuple<std::optional<NamingInformation>, std::optional<MIDIInformation>>
      */
     std::tuple<std::optional<NamingInformation>, std::optional<MIDIInformation>>
@@ -278,8 +279,9 @@ class Note
      * Multiple names can be generated due to enharmonics (enharmonics only up to one accidental are
      * created)
      *
-     * @param midi
-     * @param generate_names
+     * @param midi - MIDI value of the note
+     * @param generate_names - if false, no NoteInformation is generated; if true, possible
+     * NoteInformation is generated (up to single accidental enharmonics)
      */
     Note(midi_value midi, bool generate_names = true);
 
@@ -290,8 +292,9 @@ class Note
      * Multiple names can be generated due to enharmonics (enharmonics only up to one accidental are
      * created)
      *
-     * @param midi
-     * @param generate_names
+     * @param midi - MIDI value you want to set the Note to
+     * @param generate_names - if false, no NoteInformation is generated; if true, possible
+     * NoteInformation is generated (up to single accidental enharmonics)
      */
     void set_note(midi_value midi, bool generate_names = true);
 
@@ -301,7 +304,7 @@ class Note
      * If a number within the valid octave range is present, then MIDI information is also
      * generated
      *
-     * @param name
+     * @param name - string reference to the name of the note
      */
 
     Note(const std::string& name);
@@ -312,7 +315,7 @@ class Note
      * If a number within the valid octave range is present, then MIDI information is also
      * generated
      *
-     * @param name
+     * @param name - string reference to the name of the note
      */
     void set_note(const std::string& name);
 
@@ -323,9 +326,10 @@ class Note
      * If the scale_root has a MIDI value, then the resulting note will also have a MIDI value.
      * If the scale_root has a unique name, then the resulting note will also have a unique name.
      *
-     * @param scale_root
-     * @param scale_degree
-     * @param accidentals
+     * @param scale_root - reference to a Note that represents the scale's root
+     * @param scale_degree - which scale degree should be generated; uses 1-based indexing
+     * @param accidentals - which way and by how much accidentals should be applied (-1 is flat, -2
+     * is double flat, +1 is sharp etc.)
      */
     Note(const Note& scale_root, scale_degree_value scale_degree, accidentals_value accidentals);
 
@@ -336,9 +340,10 @@ class Note
      * If the scale_root has a MIDI value, then the resulting note will also have a MIDI value.
      * If the scale_root has a unique name, then the resulting note will also have a unique name.
      *
-     * @param scale_root
-     * @param scale_degree
-     * @param accidentals
+     * @param scale_root - reference to a Note that represents the scale's root
+     * @param scale_degree - which scale degree should be generated; uses 1-based indexing
+     * @param accidentals - which way and by how much accidentals should be applied (-1 is flat, -2
+     * is double flat, +1 is sharp etc.)
      */
     void set_note(const Note& scale_root, scale_degree_value scale_degree,
                   accidentals_value accidentals);
@@ -401,8 +406,8 @@ class Note
      *
      * Tries to print the 'complex' name if possible, otherwise prints what is possible to print.
      *
-     * @param stream
-     * @param note
+     * @param stream - output stream reference to write out
+     * @param note - reference to Note to be printed
      * @return std::ostream&
      */
     friend std::ostream& operator<<(std::ostream& stream, const Note& note);
@@ -445,7 +450,7 @@ class Scale
      * @brief Parsing method for turning a scale degree string (e.g. 'b3' or '#6') into a
      * scale_degree.
      *
-     * @param input
+     * @param input - string reference for note name to parse
      * @return scale_degree
      */
     static scale_degree parse_scale_degree_string(const std::string& input);
@@ -460,21 +465,22 @@ class Scale
     /**
      * @brief Construct a new Scale object from an input stream using the >> operator.
      *
-     * @param stream
+     * @param stream - input stream reference to read the scale from
      */
     inline Scale(std::istream& stream) { stream >> *this; }
 
     /**
      * @brief Construct a new Scale object by copying an existing std::vector<scale_degree>
      *
-     * @param degrees
+     * @param degrees - reference to vector of scale_degree (std::pair of scale_degree_value and accidentals_value) to copy
      */
     inline Scale(const std::vector<scale_degree>& degrees) : _scale_degrees(degrees) {};
 
     /**
      * @brief Construct a new Scale object by stealing an existing std::vector<scale_degree>
      *
-     * @param degrees
+     * @param degrees vector of scale_degree (std::pair of scale_degree_value and accidentals_value)
+     * to move
      */
     inline Scale(std::vector<scale_degree>&& degrees) noexcept
         : _scale_degrees(std::move(degrees)) {};
@@ -484,8 +490,8 @@ class Scale
     /**
      * @brief Operator for parsing a csv input stream into a scale object.
      *
-     * @param stream
-     * @param scale
+     * @param stream - input stream reference from which to read the scale
+     * @param scale - reference to Scale into which to parse the input
      * @return std::istream&
      */
     friend std::istream& operator>>(std::istream& stream, Scale& scale);
@@ -493,8 +499,8 @@ class Scale
     /**
      * @brief Operator for writing a string representation of a scale to an output stream.
      *
-     * @param stream
-     * @param scale
+     * @param stream - output stream reference to which to write the scale
+     * @param scale - reference to Scale to write to the ostream
      * @return std::ostream&
      */
     friend std::ostream& operator<<(std::ostream& stream, const Scale& scale);
@@ -557,7 +563,7 @@ class Scale
     /**
      * @brief Retrieves the index'th element of the underlying std::vector.
      *
-     * @param index
+     * @param index - 0-based index
      * @return scale_degree&
      */
     inline scale_degree& operator[](size_t index) { return _scale_degrees[index]; }
@@ -565,7 +571,7 @@ class Scale
     /**
      * @brief Retrieves the const index'th element of the underlying std::vector.
      *
-     * @param index
+     * @param index - 0-based index
      * @return scale_degree&
      */
     inline const scale_degree& operator[](size_t index) const { return _scale_degrees[index]; }
@@ -588,8 +594,8 @@ class RealisedScale
      * @brief Method for generating the whole list of Notes in the scale for a given root note and
      * scale.
      *
-     * @param root
-     * @param scale
+     * @param root - reference to Note that acts as the scale root
+     * @param scale - reference to Scale, which acts as a template for generating the RealisedScale
      * @return std::vector<Note>
      */
     std::vector<Note> realise_scale(const Note& root, const Scale& scale);
@@ -604,8 +610,8 @@ class RealisedScale
     /**
      * @brief Construct a new Realised Scale object from a root note and scale.
      *
-     * @param root
-     * @param scale
+     * @param root - reference to Note that acts as the scale root
+     * @param scale - reference to Scale, which acts as a template for generating the RealisedScale
      */
     RealisedScale(const Note& root, const Scale& scale);
 
@@ -624,8 +630,8 @@ class RealisedScale
     /**
      * @brief Operator for printing a realised scale into an output stream.
      *
-     * @param stream
-     * @param scale
+     * @param stream - reference to output stream where we want to write the RealisedScale into
+     * @param scale - reference to RealisedScale we want to write to the output
      * @return std::ostream&
      */
     friend std::ostream& operator<<(std::ostream& stream, const RealisedScale& scale);
@@ -688,7 +694,7 @@ class RealisedScale
     /**
      * @brief Retrieves the index'th element of the underlying std::vector.
      *
-     * @param index
+     * @param index - 0-based index
      * @return scale_degree&
      */
     inline Note& operator[](size_t index) { return _notes[index]; }
@@ -696,7 +702,7 @@ class RealisedScale
     /**
      * @brief Retrieves the const index'th element of the underlying std::vector.
      *
-     * @param index
+     * @param index - 0-based index
      * @return scale_degree&
      */
     inline const Note& operator[](size_t index) const { return _notes[index]; }

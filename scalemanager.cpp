@@ -5,7 +5,7 @@
 #include <random>
 #include <set>
 
-void ScaleManager::handle_file(std::string path)
+void ScaleManager::handle_file(const std::string& path)
 {
     std::ifstream file;
     file.open(path);
@@ -110,7 +110,7 @@ void ScaleManager::build_maps()
     }
 }
 
-void ScaleManager::load_scales_from_file(std::string path)
+void ScaleManager::load_scales_from_file(const std::string& path)
 {
     handle_file(path);
     build_maps();

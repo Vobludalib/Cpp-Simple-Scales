@@ -41,9 +41,9 @@ class ApplicationManager
         /**
          * @brief Construct a new Question object (copying)
          *
-         * @param rs
-         * @param options
-         * @param correct_index
+         * @param rs - reference to the ScaleEntry containing information about the RealisedScale
+         * @param options - reference to the vector of multiple choice options
+         * @param correct_index - the index to the correct answer in options
          */
         Question(const ScaleManager::ScaleEntry<RealisedScale>& rs,
                  const std::vector<std::string>& options, size_t correct_index)
@@ -54,9 +54,9 @@ class ApplicationManager
         /**
          * @brief Construct a new Question object (stealing)
          *
-         * @param rs
-         * @param options
-         * @param correct_index
+         * @param rs - ScaleEntry containing information about the RealisedScale
+         * @param options - vector of multiple choice options
+         * @param correct_index - the index to the correct answer in options
          */
         Question(ScaleManager::ScaleEntry<RealisedScale>&& rs, std::vector<std::string>&& options,
                  size_t correct_index)
@@ -94,7 +94,7 @@ class ApplicationManager
      *
      * This is simply a wrapper for the contained ScaleManager.
      *
-     * @param path
+     * @param path - string representation of the file path to the scales csv
      */
     inline void load_scales(std::string path) { _sm.load_scales_from_file(path); }
 
@@ -102,28 +102,28 @@ class ApplicationManager
      * @brief Generates the list of questions for this given session.
      *
      * @param number_of_questions
-     * @param difficulty
+     * @param difficulty - ScaleManager::Difficulty for which difficulty the session should be
      */
     void generate_session(size_t number_of_questions, ScaleManager::Difficulty difficulty);
 
     /**
      * @brief Used for printing the command line header to a stream.
      *
-     * @param stream
+     * @param stream - reference to the output stream to write to
      */
     void print_header(std::ostream& stream);
 
     /**
      * @brief Prints the current question to a stream.
      *
-     * @param stream
+     * @param stream - reference to the output stream to write to
      */
     void print_question(std::ostream& stream);
 
     /**
      * @brief Parses the current question's submitted answer from a stream.
      *
-     * @param stream
+     * @param stream - reference to the input stream to read the answer from
      */
     void load_answer(std::istream& stream);
 
@@ -136,7 +136,8 @@ class ApplicationManager
     /**
      * @brief 'Clears' the stream (used for the terminal here).
      *
-     * @param stream
+     * @param stream - reference to the output stream to clear. Used ANSI codes, so some output
+     * streams may not work optimally
      */
     void clear_stream(std::ostream& stream);
 
@@ -153,7 +154,7 @@ class ApplicationManager
     /**
      * @brief Used to save the results of this session to a .csv file.
      *
-     * @param file_path
+     * @param file_path - file path to where the results .csv file should be saved
      */
     void save_session_results(const std::string& file_path);
 

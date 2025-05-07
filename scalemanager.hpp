@@ -32,7 +32,7 @@ class ScaleManager
      * @brief Templated structure for holding information about a scale and its associated name and
      * difficulty
      *
-     * @tparam T
+     * @tparam T generally reserved for Scale and RealisedScale
      */
     template <typename T>
     struct ScaleEntry
@@ -46,9 +46,9 @@ class ScaleManager
         /**
          * @brief Construct a new Scale Entry object (copying)
          *
-         * @param scale
-         * @param difficulty
-         * @param name
+         * @param scale - reference to an object we want to copy into this entry
+         * @param difficulty - the difficulty we want to associate with this entry
+         * @param name - reference to the name associated with this entry (is copied)
          */
         inline ScaleEntry(const T& scale, const ScaleManager::Difficulty& difficulty,
                           const std::string& name)
@@ -59,9 +59,9 @@ class ScaleManager
         /**
          * @brief Construct a new Scale Entry object (stealing)
          *
-         * @param scale
-         * @param difficulty
-         * @param name
+         * @param scale - object we want to steal for this entry
+         * @param difficulty - the difficulty we want to associate with this entry
+         * @param name - name associated with this entry (is stolen)
          */
         inline ScaleEntry(T&& scale, ScaleManager::Difficulty&& difficulty, std::string&& name)
             : _scale(std::move(scale)), _difficulty(std::move(difficulty)), _name(std::move(name))
@@ -145,14 +145,14 @@ class ScaleManager
     /**
      * @brief Wrapper function around the file opening and closing procedure.
      *
-     * @param path
+     * @param path - reference to the file path we want to read from
      */
-    void handle_file(std::string path);
+    void handle_file(const std::string& path);
 
     /**
      * @brief Implements the actual parsing of the file stream into a bunch of ScaleEntry objects.
      *
-     * @param stream
+     * @param stream - reference to the input stream we want to parse from
      */
     void parse_fstream(std::ifstream& stream);
 
@@ -168,7 +168,7 @@ class ScaleManager
      * Pointers are used so we don't keep copying ScaleEntries.
      * This function is generally not used, as we don't have control of difficulty.
      *
-     * @param number_of_scales
+     * @param number_of_scales - the number of scales we want to generate
      * @return std::vector<std::shared_ptr<ScaleEntry<Scale>>>
      */
     std::vector<std::shared_ptr<ScaleEntry<Scale>>> get_random_scales(size_t number_of_scales);
@@ -181,8 +181,8 @@ class ScaleManager
      * We first sample questions by difficulty (each difficulty up to the set one has an equal
      * likelihood), then for each question we sample from scales within the question's difficulty.
      *
-     * @param number_of_scales
-     * @param difficulty
+     * @param number_of_scales - the number of scales we want to sample
+     * @param difficulty - the max difficulty of scales we want to sample
      * @return std::vector<std::shared_ptr<ScaleEntry<Scale>>>
      */
     std::vector<std::shared_ptr<ScaleEntry<Scale>>> get_random_scales_by_difficulty(
@@ -196,8 +196,8 @@ class ScaleManager
      * methods, as they emplace into a new vector, where the container might move during the
      * sampling process.
      *
-     * @param number_of_roots
-     * @param difficulty
+     * @param number_of_roots - the number of scales we want to sample
+     * @param difficulty - the maximum difficulty of the scales we sample
      * @return std::vector<Note*>
      */
     std::vector<Note*> get_random_roots_by_difficulty(size_t number_of_roots,
@@ -207,17 +207,17 @@ class ScaleManager
     /**
      * @brief Public calling function to load the scales from a .csv file.
      *
-     * @param path
+     * @param path - path to file we want to read from
      */
-    void load_scales_from_file(std::string path);
+    void load_scales_from_file(const std::string& path);
 
     /**
      * @brief Generates a set amount of RealisedScale ScaleEntries as questions.
      *
      * This combines difficulty-based sampling of scales and root notes.
      *
-     * @param number_of_scales
-     * @param difficulty
+     * @param number_of_scales - the number of scales to generate
+     * @param difficulty - the maximum difficulty of scales to generate
      * @return std::vector<ScaleManager::ScaleEntry<RealisedScale>>
      */
     std::vector<ScaleManager::ScaleEntry<RealisedScale>> generate_realised_scales_by_difficulty(
