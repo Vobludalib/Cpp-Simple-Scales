@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Simple-Scales: argparse::Entry Struct Reference</title>
+<title>Simple Scales: argparse::Entry Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -32,7 +32,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Simple-Scales<span id="projectnumber">&#160;0.1</span>
+   <div id="projectname">Simple Scales
    </div>
   </td>
     <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -111,248 +111,48 @@ $(function(){initNavTree('structargparse_1_1_entry.html',''); initResizable(true
   <div class="headertitle"><div class="title">argparse::Entry Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p><code>#include &lt;<a class="el" href="argparse_8hpp_source.html">argparse.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a41e0c7caeda5da4e2b3caec28bd58e1a" id="r_a41e0c7caeda5da4e2b3caec28bd58e1a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41e0c7caeda5da4e2b3caec28bd58e1a">ARG_TYPE</a> { <a class="el" href="#a41e0c7caeda5da4e2b3caec28bd58e1aa30c6000a46bdeb4d55cb7c4a0d3cc954">ARG</a>
-, <a class="el" href="#a41e0c7caeda5da4e2b3caec28bd58e1aafb306992856ffe980142f8841220a85f">KWARG</a>
-, <a class="el" href="#a41e0c7caeda5da4e2b3caec28bd58e1aafef82f2a8f0228547451026ddb0f404e">FLAG</a>
+<tr class="memitem:a41e0c7caeda5da4e2b3caec28bd58e1a" id="r_a41e0c7caeda5da4e2b3caec28bd58e1a"><td class="memItemLeft" align="right" valign="top"><a id="a41e0c7caeda5da4e2b3caec28bd58e1a" name="a41e0c7caeda5da4e2b3caec28bd58e1a"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>ARG_TYPE</b> { <b>ARG</b>
+, <b>KWARG</b>
+, <b>FLAG</b>
  }</td></tr>
 <tr class="separator:a41e0c7caeda5da4e2b3caec28bd58e1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abe444269dbf2577a00f0121a44ba99d9" id="r_abe444269dbf2577a00f0121a44ba99d9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe444269dbf2577a00f0121a44ba99d9">Entry</a> (<a class="el" href="#a41e0c7caeda5da4e2b3caec28bd58e1a">ARG_TYPE</a> <a class="el" href="#ad3745c3733d356ccbe7dd856c7d56119">type</a>, const std::string &amp;key, std::string help, std::optional&lt; std::string &gt; implicit_value=std::nullopt)</td></tr>
+<tr class="memitem:abe444269dbf2577a00f0121a44ba99d9" id="r_abe444269dbf2577a00f0121a44ba99d9"><td class="memItemLeft" align="right" valign="top"><a id="abe444269dbf2577a00f0121a44ba99d9" name="abe444269dbf2577a00f0121a44ba99d9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Entry</b> (ARG_TYPE type, const std::string &amp;key, std::string help, std::optional&lt; std::string &gt; implicit_value=std::nullopt)</td></tr>
 <tr class="separator:abe444269dbf2577a00f0121a44ba99d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a833db744c64f363cc20c125fb4333b48" id="r_a833db744c64f363cc20c125fb4333b48"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a833db744c64f363cc20c125fb4333b48"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structargparse_1_1_entry.html">Entry</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a833db744c64f363cc20c125fb4333b48">set_default</a> (const T &amp;default_value)</td></tr>
+<tr class="memitem:a833db744c64f363cc20c125fb4333b48" id="r_a833db744c64f363cc20c125fb4333b48"><td class="memTemplParams" colspan="2"><a id="a833db744c64f363cc20c125fb4333b48" name="a833db744c64f363cc20c125fb4333b48"></a>
+template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a833db744c64f363cc20c125fb4333b48"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structargparse_1_1_entry.html">Entry</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set_default</b> (const T &amp;default_value)</td></tr>
 <tr class="separator:a833db744c64f363cc20c125fb4333b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1414f6b96ff96b28ab0421f467f7af45" id="r_a1414f6b96ff96b28ab0421f467f7af45"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structargparse_1_1_entry.html">Entry</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1414f6b96ff96b28ab0421f467f7af45">multi_argument</a> ()</td></tr>
+<tr class="memitem:a1414f6b96ff96b28ab0421f467f7af45" id="r_a1414f6b96ff96b28ab0421f467f7af45"><td class="memItemLeft" align="right" valign="top"><a id="a1414f6b96ff96b28ab0421f467f7af45" name="a1414f6b96ff96b28ab0421f467f7af45"></a>
+<a class="el" href="structargparse_1_1_entry.html">Entry</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>multi_argument</b> ()</td></tr>
 <tr class="separator:a1414f6b96ff96b28ab0421f467f7af45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac60a6fe11adbe737967908b3e30eac92" id="r_ac60a6fe11adbe737967908b3e30eac92"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:ac60a6fe11adbe737967908b3e30eac92"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac60a6fe11adbe737967908b3e30eac92">operator T&amp;</a> ()</td></tr>
+<tr class="memitem:ac60a6fe11adbe737967908b3e30eac92" id="r_ac60a6fe11adbe737967908b3e30eac92"><td class="memTemplParams" colspan="2"><a id="ac60a6fe11adbe737967908b3e30eac92" name="ac60a6fe11adbe737967908b3e30eac92"></a>
+template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ac60a6fe11adbe737967908b3e30eac92"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator T&amp;</b> ()</td></tr>
 <tr class="separator:ac60a6fe11adbe737967908b3e30eac92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74b53c3cfd7962a64798cadfb3164b57" id="r_a74b53c3cfd7962a64798cadfb3164b57"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a74b53c3cfd7962a64798cadfb3164b57"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a74b53c3cfd7962a64798cadfb3164b57">operator T</a> ()</td></tr>
+<tr class="memitem:a74b53c3cfd7962a64798cadfb3164b57" id="r_a74b53c3cfd7962a64798cadfb3164b57"><td class="memTemplParams" colspan="2"><a id="a74b53c3cfd7962a64798cadfb3164b57" name="a74b53c3cfd7962a64798cadfb3164b57"></a>
+template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a74b53c3cfd7962a64798cadfb3164b57"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator T</b> ()</td></tr>
 <tr class="separator:a74b53c3cfd7962a64798cadfb3164b57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ad3745c3733d356ccbe7dd856c7d56119" id="r_ad3745c3733d356ccbe7dd856c7d56119"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="#a41e0c7caeda5da4e2b3caec28bd58e1a">argparse::Entry::ARG_TYPE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3745c3733d356ccbe7dd856c7d56119">type</a></td></tr>
+<tr class="memitem:ad3745c3733d356ccbe7dd856c7d56119" id="r_ad3745c3733d356ccbe7dd856c7d56119"><td class="memItemLeft" align="right" valign="top"><a id="ad3745c3733d356ccbe7dd856c7d56119" name="ad3745c3733d356ccbe7dd856c7d56119"></a>
+enum argparse::Entry::ARG_TYPE&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
 <tr class="separator:ad3745c3733d356ccbe7dd856c7d56119"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:a848dd3b7d769355cd99179507921de50" id="r_a848dd3b7d769355cd99179507921de50"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a848dd3b7d769355cd99179507921de50">Args</a></td></tr>
+<tr class="memitem:a848dd3b7d769355cd99179507921de50" id="r_a848dd3b7d769355cd99179507921de50"><td class="memItemLeft" align="right" valign="top"><a id="a848dd3b7d769355cd99179507921de50" name="a848dd3b7d769355cd99179507921de50"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>Args</b></td></tr>
 <tr class="separator:a848dd3b7d769355cd99179507921de50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a41e0c7caeda5da4e2b3caec28bd58e1a" name="a41e0c7caeda5da4e2b3caec28bd58e1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41e0c7caeda5da4e2b3caec28bd58e1a">&#9670;&#160;</a></span>ARG_TYPE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#a41e0c7caeda5da4e2b3caec28bd58e1a">argparse::Entry::ARG_TYPE</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a41e0c7caeda5da4e2b3caec28bd58e1aa30c6000a46bdeb4d55cb7c4a0d3cc954" name="a41e0c7caeda5da4e2b3caec28bd58e1aa30c6000a46bdeb4d55cb7c4a0d3cc954"></a>ARG&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a41e0c7caeda5da4e2b3caec28bd58e1aafb306992856ffe980142f8841220a85f" name="a41e0c7caeda5da4e2b3caec28bd58e1aafb306992856ffe980142f8841220a85f"></a>KWARG&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a41e0c7caeda5da4e2b3caec28bd58e1aafef82f2a8f0228547451026ddb0f404e" name="a41e0c7caeda5da4e2b3caec28bd58e1aafef82f2a8f0228547451026ddb0f404e"></a>FLAG&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="abe444269dbf2577a00f0121a44ba99d9" name="abe444269dbf2577a00f0121a44ba99d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe444269dbf2577a00f0121a44ba99d9">&#9670;&#160;</a></span>Entry()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">argparse::Entry::Entry </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#a41e0c7caeda5da4e2b3caec28bd58e1a">ARG_TYPE</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>key</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>help</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::optional&lt; std::string &gt;</td>          <td class="paramname"><span class="paramname"><em>implicit_value</em></span><span class="paramdefsep"> = </span><span class="paramdefval">std::nullopt</span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1414f6b96ff96b28ab0421f467f7af45" name="a1414f6b96ff96b28ab0421f467f7af45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1414f6b96ff96b28ab0421f467f7af45">&#9670;&#160;</a></span>multi_argument()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structargparse_1_1_entry.html">Entry</a> &amp; argparse::Entry::multi_argument </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a74b53c3cfd7962a64798cadfb3164b57" name="a74b53c3cfd7962a64798cadfb3164b57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74b53c3cfd7962a64798cadfb3164b57">&#9670;&#160;</a></span>operator T()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">argparse::Entry::operator T </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ac60a6fe11adbe737967908b3e30eac92" name="ac60a6fe11adbe737967908b3e30eac92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac60a6fe11adbe737967908b3e30eac92">&#9670;&#160;</a></span>operator T&amp;()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">argparse::Entry::operator T&amp; </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a833db744c64f363cc20c125fb4333b48" name="a833db744c64f363cc20c125fb4333b48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a833db744c64f363cc20c125fb4333b48">&#9670;&#160;</a></span>set_default()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structargparse_1_1_entry.html">Entry</a> &amp; argparse::Entry::set_default </td>
-          <td>(</td>
-          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>default_value</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
-<a id="a848dd3b7d769355cd99179507921de50" name="a848dd3b7d769355cd99179507921de50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a848dd3b7d769355cd99179507921de50">&#9670;&#160;</a></span>Args</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">friend class <a class="el" href="classargparse_1_1_args.html">Args</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel friend">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ad3745c3733d356ccbe7dd856c7d56119" name="ad3745c3733d356ccbe7dd856c7d56119"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3745c3733d356ccbe7dd856c7d56119">&#9670;&#160;</a></span>type</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#a41e0c7caeda5da4e2b3caec28bd58e1a">argparse::Entry::ARG_TYPE</a> argparse::Entry::type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="argparse_8hpp_source.html">argparse.hpp</a></li>
 </ul>
@@ -361,7 +161,7 @@ template&lt;typename T&gt; </div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespaceargparse.html">argparse</a></li><li class="navelem"><a class="el" href="structargparse_1_1_entry.html">Entry</a></li>
+    <li class="navelem"><b>argparse</b></li><li class="navelem"><a class="el" href="structargparse_1_1_entry.html">Entry</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['arg_5ftype_0',['ARG_TYPE',['../structargparse_1_1_entry.html#a41e0c7caeda5da4e2b3caec28bd58e1a',1,'argparse::Entry']]]
+  ['difficulty_0',['Difficulty',['../class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02e',1,'ScaleManager']]]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Simple-Scales: scalemanager.hpp Source File</title>
+<title>Simple Scales: scalemanager.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -32,7 +32,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Simple-Scales<span id="projectnumber">&#160;0.1</span>
+   <div id="projectname">Simple Scales
    </div>
   </td>
     <td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -105,7 +105,7 @@ $(function(){initNavTree('scalemanager_8hpp_source.html',''); initResizable(true
   <div class="headertitle"><div class="title">scalemanager.hpp</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="scalemanager_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef SCALEMANAGER</span></div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef SCALEMANAGER</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define SCALEMANAGER</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;fstream&gt;</span></div>
@@ -113,8 +113,8 @@ $(function(){initNavTree('scalemanager_8hpp_source.html',''); initResizable(true
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="constants_8hpp.html">constants.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="musiclibrary_8hpp.html">musiclibrary.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;constants.hpp&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;musiclibrary.hpp&quot;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span></div>
 <div class="foldopen" id="foldopen00016" data-start="{" data-end="};">
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="class_scale_manager.html">   16</a></span><span class="keyword">class </span><a class="code hl_class" href="class_scale_manager.html">ScaleManager</a></div>
@@ -123,9 +123,9 @@ $(function(){initNavTree('scalemanager_8hpp_source.html',''); initResizable(true
 <div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02e">   23</a></span>    <span class="keyword">enum class</span> <a class="code hl_enumeration" href="class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02e">Difficulty</a></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    {</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02ea6e5affbf5c08fef0e28c094856f94627">   25</a></span>        <a class="code hl_enumvalue" href="class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02ea6e5affbf5c08fef0e28c094856f94627">EASY</a> = 0,</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02eac87f3be66ffc3c0d4249f1c2cc5f3cce">   26</a></span>        <a class="code hl_enumvalue" href="class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02eac87f3be66ffc3c0d4249f1c2cc5f3cce">MEDIUM</a>,</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02ea7c144eae2e08db14c82e376603cc01f4">   27</a></span>        <a class="code hl_enumvalue" href="class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02ea7c144eae2e08db14c82e376603cc01f4">HARD</a></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        EASY = 0,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        MEDIUM,</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        HARD</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    };</div>
 </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
@@ -176,7 +176,7 @@ $(function(){initNavTree('scalemanager_8hpp_source.html',''); initResizable(true
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        {1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0},</div>
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        {2, 1, 2, 2, 2, 2, 1, 1, 2, 1, 2, 2, 1}};</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keywordtype">void</span> handle_file(std::string path);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keywordtype">void</span> handle_file(<span class="keyword">const</span> std::string&amp; path);</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span></div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keywordtype">void</span> parse_fstream(std::ifstream&amp; stream);</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span></div>
@@ -191,32 +191,26 @@ $(function(){initNavTree('scalemanager_8hpp_source.html',''); initResizable(true
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>                                                      <a class="code hl_enumeration" href="class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02e">ScaleManager::Difficulty</a> difficulty);</div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>   <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_scale_manager.html#ac9076940f53ef2e491e78ec57691e7e8">load_scales_from_file</a>(std::string path);</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_scale_manager.html#ada55e06082f409fe25c00cf14fc4c785">load_scales_from_file</a>(<span class="keyword">const</span> std::string&amp; path);</div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span></div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    std::vector&lt;ScaleManager::ScaleEntry&lt;RealisedScale&gt;&gt; <a class="code hl_function" href="class_scale_manager.html#af0ed3d07bbfecd03f4e15cc006bea97b">generate_realised_scales_by_difficulty</a>(</div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>        <span class="keywordtype">size_t</span> number_of_scales, <a class="code hl_enumeration" href="class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02e">ScaleManager::Difficulty</a> difficulty);</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno"><a class="line" href="class_scale_manager.html#a12bd662ccd51187499306b0a300526f0">  226</a></span>    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code hl_friend" href="class_scale_manager.html#a12bd662ccd51187499306b0a300526f0">ApplicationManager</a>;</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    <span class="keyword">friend</span> <span class="keyword">class </span>ApplicationManager;</div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>};</div>
 </div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_scale_manager_html"><div class="ttname"><a href="class_scale_manager.html">ScaleManager</a></div><div class="ttdoc">Class responsible for handling the loading of scales and generating questions.</div><div class="ttdef"><b>Definition</b> scalemanager.hpp:17</div></div>
-<div class="ttc" id="aclass_scale_manager_html_a12bd662ccd51187499306b0a300526f0"><div class="ttname"><a href="class_scale_manager.html#a12bd662ccd51187499306b0a300526f0">ScaleManager::ApplicationManager</a></div><div class="ttdeci">friend class ApplicationManager</div><div class="ttdef"><b>Definition</b> scalemanager.hpp:226</div></div>
 <div class="ttc" id="aclass_scale_manager_html_a46838b5760e4ff0db0d39257fcdbe02e"><div class="ttname"><a href="class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02e">ScaleManager::Difficulty</a></div><div class="ttdeci">Difficulty</div><div class="ttdoc">Enum for representing difficulty.</div><div class="ttdef"><b>Definition</b> scalemanager.hpp:24</div></div>
-<div class="ttc" id="aclass_scale_manager_html_a46838b5760e4ff0db0d39257fcdbe02ea6e5affbf5c08fef0e28c094856f94627"><div class="ttname"><a href="class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02ea6e5affbf5c08fef0e28c094856f94627">ScaleManager::Difficulty::EASY</a></div><div class="ttdeci">@ EASY</div><div class="ttdef"><b>Definition</b> scalemanager.hpp:25</div></div>
-<div class="ttc" id="aclass_scale_manager_html_a46838b5760e4ff0db0d39257fcdbe02ea7c144eae2e08db14c82e376603cc01f4"><div class="ttname"><a href="class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02ea7c144eae2e08db14c82e376603cc01f4">ScaleManager::Difficulty::HARD</a></div><div class="ttdeci">@ HARD</div><div class="ttdef"><b>Definition</b> scalemanager.hpp:27</div></div>
-<div class="ttc" id="aclass_scale_manager_html_a46838b5760e4ff0db0d39257fcdbe02eac87f3be66ffc3c0d4249f1c2cc5f3cce"><div class="ttname"><a href="class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02eac87f3be66ffc3c0d4249f1c2cc5f3cce">ScaleManager::Difficulty::MEDIUM</a></div><div class="ttdeci">@ MEDIUM</div><div class="ttdef"><b>Definition</b> scalemanager.hpp:26</div></div>
-<div class="ttc" id="aclass_scale_manager_html_ac9076940f53ef2e491e78ec57691e7e8"><div class="ttname"><a href="class_scale_manager.html#ac9076940f53ef2e491e78ec57691e7e8">ScaleManager::load_scales_from_file</a></div><div class="ttdeci">void load_scales_from_file(std::string path)</div><div class="ttdoc">Public calling function to load the scales from a .csv file.</div><div class="ttdef"><b>Definition</b> scalemanager.cpp:101</div></div>
-<div class="ttc" id="aclass_scale_manager_html_af0ed3d07bbfecd03f4e15cc006bea97b"><div class="ttname"><a href="class_scale_manager.html#af0ed3d07bbfecd03f4e15cc006bea97b">ScaleManager::generate_realised_scales_by_difficulty</a></div><div class="ttdeci">std::vector&lt; ScaleManager::ScaleEntry&lt; RealisedScale &gt; &gt; generate_realised_scales_by_difficulty(size_t number_of_scales, ScaleManager::Difficulty difficulty)</div><div class="ttdoc">Generates a set amount of RealisedScale ScaleEntries as questions.</div><div class="ttdef"><b>Definition</b> scalemanager.cpp:212</div></div>
-<div class="ttc" id="aconstants_8hpp_html"><div class="ttname"><a href="constants_8hpp.html">constants.hpp</a></div></div>
-<div class="ttc" id="amusiclibrary_8hpp_html"><div class="ttname"><a href="musiclibrary_8hpp.html">musiclibrary.hpp</a></div></div>
+<div class="ttc" id="aclass_scale_manager_html_ada55e06082f409fe25c00cf14fc4c785"><div class="ttname"><a href="class_scale_manager.html#ada55e06082f409fe25c00cf14fc4c785">ScaleManager::load_scales_from_file</a></div><div class="ttdeci">void load_scales_from_file(const std::string &amp;path)</div><div class="ttdoc">Public calling function to load the scales from a .csv file.</div><div class="ttdef"><b>Definition</b> scalemanager.cpp:113</div></div>
+<div class="ttc" id="aclass_scale_manager_html_af0ed3d07bbfecd03f4e15cc006bea97b"><div class="ttname"><a href="class_scale_manager.html#af0ed3d07bbfecd03f4e15cc006bea97b">ScaleManager::generate_realised_scales_by_difficulty</a></div><div class="ttdeci">std::vector&lt; ScaleManager::ScaleEntry&lt; RealisedScale &gt; &gt; generate_realised_scales_by_difficulty(size_t number_of_scales, ScaleManager::Difficulty difficulty)</div><div class="ttdoc">Generates a set amount of RealisedScale ScaleEntries as questions.</div><div class="ttdef"><b>Definition</b> scalemanager.cpp:224</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="scalemanager_8hpp.html">scalemanager.hpp</a></li>
+    <li class="navelem"><b>scalemanager.hpp</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['hard_0',['HARD',['../class_scale_manager.html#a46838b5760e4ff0db0d39257fcdbe02ea7c144eae2e08db14c82e376603cc01f4',1,'ScaleManager']]],
-  ['has_5fostream_5foperator_1',['has_ostream_operator',['../structargparse_1_1has__ostream__operator.html',1,'argparse']]],
-  ['has_5fostream_5foperator_3c_20t_2c_20decltype_28void_28std_3a_3adeclval_3c_20std_3a_3aostream_20_26_20_3e_28_29_3c_3c_20std_3a_3adeclval_3c_20const_20t_20_26_20_3e_28_29_29_29_3e_2',['has_ostream_operator&lt; T, decltype(void(std::declval&lt; std::ostream &amp; &gt;()&lt;&lt; std::declval&lt; const T &amp; &gt;()))&gt;',['../structargparse_1_1has__ostream__operator_3_01_t_00_01decltype_07void_07std_1_1declval_3_01std_1_6c5d0d1c2ab9e1042116bc858b1c1a26.html',1,'argparse']]],
-  ['help_3',['help',['../classargparse_1_1_args.html#a88461b71b01c92647ed3f11690278ca3',1,'argparse::Args']]]
+  ['installation_0',['Installation',['../md__r_e_a_d_m_e.html#autotoc_md2',1,'']]],
+  ['is_5foptional_1',['is_optional',['../structargparse_1_1is__optional.html',1,'argparse']]],
+  ['is_5foptional_3c_20std_3a_3aoptional_3c_20t_20_3e_20_3e_2',['is_optional&lt; std::optional&lt; T &gt; &gt;',['../structargparse_1_1is__optional_3_01std_1_1optional_3_01_t_01_4_01_4.html',1,'argparse']]],
+  ['is_5fshared_5fptr_3',['is_shared_ptr',['../structargparse_1_1is__shared__ptr.html',1,'argparse']]],
+  ['is_5fshared_5fptr_3c_20std_3a_3ashared_5fptr_3c_20t_20_3e_20_3e_4',['is_shared_ptr&lt; std::shared_ptr&lt; T &gt; &gt;',['../structargparse_1_1is__shared__ptr_3_01std_1_1shared__ptr_3_01_t_01_4_01_4.html',1,'argparse']]],
+  ['is_5fvector_5',['is_vector',['../structargparse_1_1is__vector.html',1,'argparse']]],
+  ['is_5fvector_3c_20std_3a_3avector_3c_20t_2c_20a_20_3e_20_3e_6',['is_vector&lt; std::vector&lt; T, A &gt; &gt;',['../structargparse_1_1is__vector_3_01std_1_1vector_3_01_t_00_01_a_01_4_01_4.html',1,'argparse']]]
 ];
